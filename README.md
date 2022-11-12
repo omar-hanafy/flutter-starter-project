@@ -9,7 +9,9 @@ Template Flutter App
 
 ## Getting Started 🚀
 1- Run Flutter create in the project to generate your prefered project name and org.
-2- Change the app name in the pubspec.yaml to your new name. 
+
+2- Change the app name in the pubspec.yaml to your new name.
+
 4- run => flutter run -d 'your device'
 
 
