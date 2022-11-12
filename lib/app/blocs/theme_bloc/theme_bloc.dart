@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_starter/app/app.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+
+class ThemeBloc extends HydratedBloc<ChangeBrightness, Brightness> {
+  ThemeBloc({Brightness? brightness}) : super(brightness ?? Brightness.light) {
+    on<ChangeBrightness>(_onChangeBrightness);
+  }
+
+  void _onChangeBrightness(ChangeBrightness event, Emitter<Brightness> emit) {
+    final brightness = _getBrightness(event);
+    if (state != brightness) {
+      emit(brightness);
+    }
+  }
+
+  Brightness _getBrightness(ChangeBrightness event) {
+    switch (event.brightnessType) {
+      case BrightnessTypesEvent.dark:
+        return Brightness.dark;
+
+      case BrightnessTypesEvent.light:
+        return Brightness.light;
+
+      case BrightnessTypesEvent.system:
+        return event.context.sysBrightness;
+
+      case BrightnessTypesEvent.toggle:
+        return state == Brightness.light ? Brightness.dark : Brightness.light;
+    }
+  }
+
+  @override
+  Brightness? fromJson(Map<String, dynamic> json) =>
+      json['state'] as int == 0 ? Brightness.dark : Brightness.light;
+
+  @override
+  Map<String, dynamic>? toJson(Brightness state) => {'state': state.index};
+}
+
+class ChangeBrightness {
+  ChangeBrightness(this.context,
+      {this.brightnessType = BrightnessTypesEvent.toggle});
+
+  final BuildContext context;
+  final BrightnessTypesEvent brightnessType;
+}
+
+class BrightnessChanged {
+  BrightnessChanged(this.brightness);
+
+  final Brightness brightness;
+
+  @override
+  String toString() => 'ThemeChanged: New Theme Brightness is $brightness';
+}
