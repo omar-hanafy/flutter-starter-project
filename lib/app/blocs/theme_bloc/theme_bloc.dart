@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/app/app.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+
+import '../../../app/app.dart';
 
 class ThemeBloc extends HydratedBloc<ChangeBrightness, Brightness> {
   ThemeBloc({Brightness? brightness}) : super(brightness ?? Brightness.light) {
