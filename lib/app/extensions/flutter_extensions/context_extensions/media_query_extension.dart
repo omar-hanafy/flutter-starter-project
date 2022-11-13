@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../l10n/l10n.dart';
-
-extension ContextExtensions on BuildContext {
-  // Returns the MediaQuery
+extension MediaQueryExtension on BuildContext {
   MediaQueryData get mq => MediaQuery.of(this);
 
   /// Returns if Orientation is landscape
@@ -21,14 +18,4 @@ extension ContextExtensions on BuildContext {
   double get shortestSide => sizePx.shortestSide;
 
   double get longestSide => sizePx.longestSide;
-
-  AppLocalizations? get l10n => AppLocalizations.of(this);
-
-  ThemeData get theme => Theme.of(this);
-
-  TextTheme get textTheme => theme.textTheme;
-
-  Brightness get brightness => theme.brightness;
-
-  Brightness get sysBrightness => mq.platformBrightness;
 }

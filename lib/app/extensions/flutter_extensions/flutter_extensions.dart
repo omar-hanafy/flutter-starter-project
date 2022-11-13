@@ -1,7 +1,7 @@
 export 'align.dart';
 export 'center.dart';
 export 'container.dart';
-export 'context.dart';
+export 'context_extensions/context.dart';
 export 'gesture_detector.dart';
 export 'icon.dart';
 export 'list.dart';

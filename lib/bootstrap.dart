@@ -62,10 +62,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
           // BlocProvider(
           //     create: (_) => AppBloc(authenticationRepository: authRepository)),
           //todo: merge navigation blocs
-          BlocProvider<NavigationIndexCubit>(
-              create: (context) => NavigationIndexCubit()),
-          BlocProvider<NavigationControllerCubit>(
-              create: (context) => NavigationControllerCubit()),
         ],
         child: await builder(),
       ),

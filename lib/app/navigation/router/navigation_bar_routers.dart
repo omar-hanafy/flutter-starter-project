@@ -23,17 +23,17 @@ class HomeRouterCubit extends Cubit<GoRouter> {
   HomeRouterCubit()
       : super(
           GoRouter(
-            initialLocation: '/${RoutePaths.home}',
+            initialLocation: '/${RouteName.home.name}',
             // errorBuilder: (BuildContext context, GoRouterState state) =>
             //     ErrorPage(state: state),
             routes: [
               GoRoute(
                 path: '/',
                 redirect: (BuildContext context, GoRouterState state) =>
-                    '/${RoutePaths.home}',
+                    '/${RouteName.home.name}',
               ),
               GoRoute(
-                path: '/${RoutePaths.home}',
+                path: '/${RouteName.home.name}',
                 routes: homeSubRoutes,
                 pageBuilder: (context, state) {
                   return const MaterialPage(
@@ -65,17 +65,17 @@ class ExploreRouterCubit extends Cubit<GoRouter> {
   ExploreRouterCubit()
       : super(
           GoRouter(
-            initialLocation: '/${RoutePaths.explore}',
+            initialLocation: '/${RouteName.explore.name}',
             // errorBuilder: (BuildContext context, GoRouterState state) =>
             //     ErrorPage(state: state),
             routes: [
               GoRoute(
                 path: '/',
                 redirect: (BuildContext context, GoRouterState state) =>
-                    '/${RoutePaths.explore}',
+                    '/${RouteName.explore.name}',
               ),
               GoRoute(
-                path: '/${RoutePaths.explore}',
+                path: '/${RouteName.explore.name}',
                 routes: exploreSubRoutes,
                 pageBuilder: (context, state) {
                   return const MaterialPage(
@@ -107,17 +107,17 @@ class CartRouterCubit extends Cubit<GoRouter> {
   CartRouterCubit()
       : super(
           GoRouter(
-            initialLocation: '/${RoutePaths.cart}',
+            initialLocation: '/${RouteName.cart.name}',
             // errorBuilder: (BuildContext context, GoRouterState state) =>
             //     ErrorPage(state: state),
             routes: [
               GoRoute(
                 path: '/',
                 redirect: (BuildContext context, GoRouterState state) =>
-                    '/${RoutePaths.cart}',
+                    '/${RouteName.cart.name}',
               ),
               GoRoute(
-                path: '/${RoutePaths.cart}',
+                path: '/${RouteName.cart.name}',
                 routes: carteSubRoutes,
                 pageBuilder: (context, state) {
                   return const MaterialPage(
@@ -149,17 +149,17 @@ class OrdersRouterCubit extends Cubit<GoRouter> {
   OrdersRouterCubit()
       : super(
           GoRouter(
-            initialLocation: '/${RoutePaths.orders}',
+            initialLocation: '/${RouteName.orders.name}',
             // errorBuilder: (BuildContext context, GoRouterState state) =>
             //     ErrorPage(state: state),
             routes: [
               GoRoute(
                 path: '/',
                 redirect: (BuildContext context, GoRouterState state) =>
-                    '/${RoutePaths.orders}',
+                    '/${RouteName.orders.name}',
               ),
               GoRoute(
-                path: '/${RoutePaths.orders}',
+                path: '/${RouteName.orders.name}',
                 routes: ordersSubRoutes,
                 pageBuilder: (context, state) {
                   return const MaterialPage(
@@ -191,17 +191,17 @@ class AccountRouterCubit extends Cubit<GoRouter> {
   AccountRouterCubit()
       : super(
           GoRouter(
-            initialLocation: '/${RoutePaths.account}',
+            initialLocation: '/${RouteName.account.name}',
             // errorBuilder: (BuildContext context, GoRouterState state) =>
             //     ErrorPage(state: state),
             routes: [
               GoRoute(
                 path: '/',
                 redirect: (BuildContext context, GoRouterState state) =>
-                    '/${RoutePaths.account}',
+                    '/${RouteName.account.name}',
               ),
               GoRoute(
-                path: '/${RoutePaths.account}',
+                path: '/${RouteName.account.name}',
                 routes: accountSubRoutes,
                 pageBuilder: (context, state) {
                   return const MaterialPage(
