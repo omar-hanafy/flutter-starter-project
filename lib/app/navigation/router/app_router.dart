@@ -30,14 +30,12 @@ class AppRouterCubit extends Cubit<GoRouter> {
                   name: RouteName.home.name,
                   routes: homeSubRoutes,
                   pageBuilder: (context, state) {
-                    final isDesktop = AppBreakpoint.isLargerThan(
-                        context.widthPx, ScreenType.tablet);
                     return _pageBuilder(context, state,
                         child: kIsWeb
                             ? const HomeView()
-                            : isDesktop
-                                ? const MyNavigationRail()
-                                : const MyBottomNavBar());
+                            : context.isDesktop
+                                ? const DesktopNavigationBar()
+                                : const MobileNavigationBar());
                   }),
               GoRoute(
                 path: '/${RouteName.explore.name}',

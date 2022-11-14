@@ -4,14 +4,14 @@ description: My new Flutter app
 publish_to: none
 
 environment: 
-  sdk: '>=2.18.0 <3.0.0'
-  flutter: 3.3.1
+  sdk: '>=2.18.4 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  window_manager: ^0.2.7
   flutter_bloc: ^8.1.1
   hydrated_bloc: 9.0.0
   path_provider: ^2.0.11

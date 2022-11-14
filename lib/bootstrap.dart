@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'lib.dart';
 
@@ -40,12 +41,14 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   // authRepository = AuthenticationRepository();
   // await authRepository.user.first;
+  await windowManager.ensureInitialized();
 
-  ///    runZonedGuarded(
-  ///    () => BlocOverrides.runZoned(
-  ///    () async => runApp(await builder()),
-  ///    blocObserver: AppBlocObserver()
-  ///    ),
+  const windowOptions = WindowOptions();
+
+  await windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setMinimumSize(const Size(500, 500));
+    await windowManager.focus();
+  });
 
   await runZonedGuarded(
     () async => runApp(

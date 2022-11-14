@@ -27,7 +27,4 @@ class NavigationBarCubit extends Cubit<NavigationBarState> {
       );
     }
   }
-
-  void init() => emit(
-      state.copyWith(controller: PageController(initialPage: state.index)));
 }
