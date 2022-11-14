@@ -8,69 +8,23 @@ class WebNavigationBar extends StatelessWidget {
 
   final Widget child;
 
-  static TextStyle? _getTextStyle(BuildContext context,
-      {RouteName routeName = RouteName.home}) {
-    final firstPage = NavigationHelper(context).firstPage;
-    if (firstPage == routeName.name) {
-      return const TextStyle(
-          color: AppColor.primaryColor,
-          fontSize: 20,
-          fontWeight: FontWeight.bold);
-    }
-    return const TextStyle(fontSize: 16);
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = context.widthPx;
     debugPrint(
         '${AppBreakpoint.getScreenType(context)} screen width: $screenWidth');
 
-    final isSmall =
-        AppBreakpoint.isSmallerThan(screenWidth, ScreenType.sTablet);
-
     final isMedium =
         AppBreakpoint.isSmallerThan(screenWidth, ScreenType.lTablet);
 
-    Widget navBarItem({required RouteName routeName}) {
-      if (isSmall) {
-        return ListTile(
-          title: Text(routeName.fullName,
-              style: _getTextStyle(context, routeName: routeName)),
-          onTap: () {
-            context
-              ..pushNamed(name: routeName)
-              ..pop();
-          },
-        );
-      }
-      return GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () => context.pushNamed(name: routeName),
-        child: FocusableActionDetector(
-          mouseCursor: SystemMouseCursors.click,
-          child: SizedBox(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(routeName.fullName,
-                  style: _getTextStyle(context, routeName: routeName)),
-            ),
-          ),
-        ),
-      );
-    }
+    final isSmall =
+        AppBreakpoint.isSmallerThan(screenWidth, ScreenType.sTablet);
 
-    final navigationItems = <Widget>[
-      navBarItem(routeName: RouteName.home),
-      navBarItem(routeName: RouteName.explore),
-      navBarItem(routeName: RouteName.cart),
-      navBarItem(routeName: RouteName.orders),
-      navBarItem(routeName: RouteName.account),
-    ];
+    final navigationItems = NavigationHelper(context).webNavItems;
 
     final Widget changeBrightnessIcon = IconButton(
       onPressed: () => context.read<ThemeBloc>().add(ChangeBrightness(context)),
-      icon: Icon(context.isDark ? Icons.dark_mode : Icons.dark_mode_outlined),
+      icon: Icon(context.isDark ? AppIcon.darkMode : AppIcon.darkModeOutlined),
     );
 
     return isSmall
@@ -138,6 +92,57 @@ class WebNavigationBar extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          );
+  }
+}
+
+class WebNavBarItem extends StatelessWidget {
+  const WebNavBarItem(
+      {super.key, required this.routeName, this.icon, required this.label});
+
+  final RouteName routeName;
+  final String label;
+  final Icon? icon;
+
+  static TextStyle? _getTextStyle(BuildContext context,
+      {RouteName routeName = RouteName.home}) {
+    final firstPage = NavigationHelper(context).firstPage;
+    if (firstPage == routeName.name) {
+      return const TextStyle(
+          color: AppColor.primaryColor,
+          fontSize: 20,
+          fontWeight: FontWeight.bold);
+    }
+    return const TextStyle(fontSize: 16);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isSmall =
+        AppBreakpoint.isSmallerThan(context.widthPx, ScreenType.sTablet);
+    return isSmall
+        ? ListTile(
+            title: Text(label,
+                style: _getTextStyle(context, routeName: routeName)),
+            onTap: () {
+              context
+                ..pushNamed(name: routeName)
+                ..pop();
+            },
+          )
+        : GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => context.pushNamed(name: routeName),
+            child: FocusableActionDetector(
+              mouseCursor: SystemMouseCursors.click,
+              child: SizedBox(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(label,
+                      style: _getTextStyle(context, routeName: routeName)),
+                ),
+              ),
             ),
           );
   }

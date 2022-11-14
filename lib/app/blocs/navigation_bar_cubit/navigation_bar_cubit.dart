@@ -20,7 +20,7 @@ class NavigationBarCubit extends Cubit<NavigationBarState> {
 
   void goName(RouteName name) {
     if (state.controller.hasClients &&
-        NavigationHelper.navWidgets.length <= name.index) {
+        NavigationHelper.navPageRouters.length <= name.index) {
       state.controller.jumpToPage(name.index);
       emit(
         state.copyWith(index: name.index, controller: state.controller),

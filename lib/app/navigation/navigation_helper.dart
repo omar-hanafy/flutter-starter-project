@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,8 +15,6 @@ extension NavigationHelperExtension on BuildContext {
 }
 
 class NavigationHelper {
-  //todo: create extension methods
-
   NavigationHelper(this.context);
 
   final BuildContext context;
@@ -24,12 +22,100 @@ class NavigationHelper {
   late final navCubit = context.read<NavigationBarCubit>();
   late final appRouterCubit = context.read<AppRouterCubit>();
 
-  static List<Widget> get navWidgets => const [
+  // for non web
+  static List<Widget> get navPageRouters => const [
         HomeNavBarItemRouter(),
         ExploreNavBarItemRouter(),
         CartNavBarItemRouter(),
         OrdersNavBarItemRouter(),
         AccountNavBarItemRouter(),
+      ];
+
+  // for non web
+  static List<BlocProvider> get navBlocProviders => [
+        BlocProvider<NavigationBarCubit>(create: (_) => NavigationBarCubit()),
+        BlocProvider<HomeRouterCubit>(create: (_) => HomeRouterCubit()),
+        BlocProvider<ExploreRouterCubit>(create: (_) => ExploreRouterCubit()),
+        BlocProvider<CartRouterCubit>(create: (_) => CartRouterCubit()),
+        BlocProvider<OrdersRouterCubit>(create: (_) => OrdersRouterCubit()),
+        BlocProvider<AccountRouterCubit>(create: (_) => AccountRouterCubit())
+      ];
+
+  // for mobile
+  List<BottomNavigationBarItem> get mobileNavItems => [
+        BottomNavigationBarItem(
+          backgroundColor: AppColor.primaryColor,
+          icon: const Icon(AppIcon.homeOutlined),
+          label: AppLocalizations.of(context)!.home,
+        ),
+        BottomNavigationBarItem(
+          backgroundColor: AppColor.primaryColor,
+          icon: const Icon(AppIcon.searchOutlined),
+          label: AppLocalizations.of(context)!.explore,
+        ),
+        BottomNavigationBarItem(
+          backgroundColor: AppColor.primaryColor,
+          icon: const Icon(AppIcon.shoppingCartOutlined),
+          label: AppLocalizations.of(context)!.cart,
+        ),
+        BottomNavigationBarItem(
+          backgroundColor: AppColor.primaryColor,
+          icon: const Icon(AppIcon.archiveOutlined),
+          label: AppLocalizations.of(context)!.orders,
+        ),
+        BottomNavigationBarItem(
+          backgroundColor: AppColor.primaryColor,
+          icon: const Icon(AppIcon.personOutlined),
+          label: AppLocalizations.of(context)!.account,
+        ),
+      ];
+
+  // for desktop
+  List<NavigationRailDestination> get desktopNavItems => [
+        NavigationRailDestination(
+          icon: const Icon(AppIcon.homeOutlined),
+          label: Text(AppLocalizations.of(context)!.home),
+        ),
+        NavigationRailDestination(
+          icon: const Icon(AppIcon.searchOutlined),
+          label: Text(AppLocalizations.of(context)!.explore),
+        ),
+        NavigationRailDestination(
+          icon: const Icon(AppIcon.shoppingCartOutlined),
+          label: Text(AppLocalizations.of(context)!.cart),
+        ),
+        NavigationRailDestination(
+          icon: const Icon(AppIcon.archiveOutlined),
+          label: Text(AppLocalizations.of(context)!.orders),
+        ),
+        NavigationRailDestination(
+          icon: const Icon(AppIcon.personOutlined),
+          label: Text(AppLocalizations.of(context)!.account),
+        ),
+      ];
+
+  // for web
+  List<WebNavBarItem> get webNavItems => [
+        WebNavBarItem(
+            icon: const Icon(AppIcon.homeOutlined),
+            routeName: RouteName.home,
+            label: AppLocalizations.of(context)!.home),
+        WebNavBarItem(
+            icon: const Icon(AppIcon.searchOutlined),
+            routeName: RouteName.explore,
+            label: AppLocalizations.of(context)!.explore),
+        WebNavBarItem(
+            icon: const Icon(AppIcon.shoppingCartOutlined),
+            routeName: RouteName.cart,
+            label: AppLocalizations.of(context)!.cart),
+        WebNavBarItem(
+            icon: const Icon(AppIcon.archiveOutlined),
+            routeName: RouteName.orders,
+            label: AppLocalizations.of(context)!.orders),
+        WebNavBarItem(
+            icon: const Icon(AppIcon.personOutlined),
+            routeName: RouteName.account,
+            label: AppLocalizations.of(context)!.account),
       ];
 
   List<String> get pages {
@@ -70,7 +156,7 @@ class NavigationHelper {
     if (kIsWeb || pushGlobally) {
       appRouterCubit.state.goNamed(name.name, queryParams: queryParams);
     } else {
-      if (NavigationHelper.navWidgets.length <= name.index) {
+      if (NavigationHelper.navPageRouters.length <= name.index) {
         navCubit.goName(name);
       } else {
         _getState.pushNamed(name.name, queryParams: queryParams);

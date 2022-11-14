@@ -16,11 +16,20 @@ import 'lib.dart';
 ///    returning a Future or a Widget and it will
 ///    execute asynchronously (builder may or may not execute asynchronously).
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
   WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  const windowOptions = WindowOptions();
+
+  await windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setMinimumSize(const Size(500, 500));
+    await windowManager.focus();
+  });
 
   HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: kIsWeb
@@ -41,14 +50,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   // authRepository = AuthenticationRepository();
   // await authRepository.user.first;
-  await windowManager.ensureInitialized();
-
-  const windowOptions = WindowOptions();
-
-  await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.setMinimumSize(const Size(500, 500));
-    await windowManager.focus();
-  });
 
   await runZonedGuarded(
     () async => runApp(

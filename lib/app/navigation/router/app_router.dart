@@ -116,14 +116,9 @@ class RouterPageBuilder extends StatelessWidget {
                         AppBreakpoint.getTextScale(context.widthPx)),
                 child: kIsWeb
                     ? WebNavigationBar(child: child)
-                    : MultiBlocProvider(providers: [
-                        BlocProvider(create: (_) => NavigationBarCubit()),
-                        BlocProvider(create: (_) => HomeRouterCubit()),
-                        BlocProvider(create: (_) => ExploreRouterCubit()),
-                        BlocProvider(create: (_) => CartRouterCubit()),
-                        BlocProvider(create: (_) => OrdersRouterCubit()),
-                        BlocProvider(create: (_) => AccountRouterCubit())
-                      ], child: child),
+                    : MultiBlocProvider(
+                        providers: NavigationHelper.navBlocProviders,
+                        child: child),
               );
             }),
           ),
