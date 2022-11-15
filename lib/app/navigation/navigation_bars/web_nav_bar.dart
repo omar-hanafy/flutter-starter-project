@@ -30,7 +30,11 @@ class WebNavigationBar extends StatelessWidget {
     return isSmall
         ? Scaffold(
             drawerEnableOpenDragGesture: false,
-            appBar: const CustomAppBar() as PreferredSizeWidget,
+            appBar: AppBar(
+              elevation: 0,
+              title: Text(NavigationHelper(context).getTitle),
+              actions: [changeBrightnessIcon],
+            ),
             drawer: Drawer(
               child: ListView(
                 padding:

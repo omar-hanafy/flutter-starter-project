@@ -20,26 +20,17 @@ class NavigationHelper {
   final BuildContext context;
 
   late final navCubit = context.read<NavigationBarCubit>();
-  late final appRouterCubit = context.read<AppRouterCubit>();
 
   // for non web
-  static List<Widget> get navPageRouters => const [
-        HomeNavBarItemRouter(),
-        ExploreNavBarItemRouter(),
-        CartNavBarItemRouter(),
-        OrdersNavBarItemRouter(),
-        AccountNavBarItemRouter(),
-      ];
+  static final List<Widget> _navPageRouters = [
+    NavBarItemRouter(router: NavBarRouters.homeRouter),
+    NavBarItemRouter(router: NavBarRouters.exploreRouter),
+    NavBarItemRouter(router: NavBarRouters.cartRouter),
+    NavBarItemRouter(router: NavBarRouters.ordersRouter),
+    NavBarItemRouter(router: NavBarRouters.accountRouter),
+  ];
 
-  // for non web
-  static List<BlocProvider> get navBlocProviders => [
-        BlocProvider<NavigationBarCubit>(create: (_) => NavigationBarCubit()),
-        BlocProvider<HomeRouterCubit>(create: (_) => HomeRouterCubit()),
-        BlocProvider<ExploreRouterCubit>(create: (_) => ExploreRouterCubit()),
-        BlocProvider<CartRouterCubit>(create: (_) => CartRouterCubit()),
-        BlocProvider<OrdersRouterCubit>(create: (_) => OrdersRouterCubit()),
-        BlocProvider<AccountRouterCubit>(create: (_) => AccountRouterCubit())
-      ];
+  static List<Widget> get navPageRouters => _navPageRouters;
 
   // for mobile
   List<BottomNavigationBarItem> get mobileNavItems => [
@@ -94,7 +85,7 @@ class NavigationHelper {
         ),
       ];
 
-  // for web
+  // for web (customized)
   List<WebNavBarItem> get webNavItems => [
         WebNavBarItem(
             icon: const Icon(AppIcon.homeOutlined),
@@ -154,7 +145,7 @@ class NavigationHelper {
       required RouteName name,
       Map<String, String> queryParams = const {}}) {
     if (kIsWeb || pushGlobally) {
-      appRouterCubit.state.goNamed(name.name, queryParams: queryParams);
+      AppRouter.appRouter.goNamed(name.name, queryParams: queryParams);
     } else {
       if (NavigationHelper.navPageRouters.length <= name.index) {
         navCubit.goName(name);
@@ -166,21 +157,21 @@ class NavigationHelper {
 
   GoRouter get _getState {
     if (kIsWeb) {
-      return appRouterCubit.state;
+      return AppRouter.appRouter;
     } else {
       switch (navCubit.state.index) {
         case 0:
-          return context.read<HomeRouterCubit>().state;
+          return NavBarRouters.homeRouter;
         case 1:
-          return context.read<ExploreRouterCubit>().state;
+          return NavBarRouters.exploreRouter;
         case 2:
-          return context.read<CartRouterCubit>().state;
+          return NavBarRouters.cartRouter;
         case 3:
-          return context.read<OrdersRouterCubit>().state;
+          return NavBarRouters.ordersRouter;
         case 4:
-          return context.read<AccountRouterCubit>().state;
+          return NavBarRouters.accountRouter;
         default:
-          return context.read<AppRouterCubit>().state;
+          return NavBarRouters.homeRouter;
       }
     }
   }

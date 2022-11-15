@@ -16,20 +16,22 @@ import 'lib.dart';
 ///    returning a Future or a Widget and it will
 ///    execute asynchronously (builder may or may not execute asynchronously).
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
-
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
 
-  const windowOptions = WindowOptions();
+  // modify and manage app window on desktop platforms
+  if (!kIsWeb && defaultTargetPlatform.isDesktop) {
+    await windowManager.ensureInitialized();
+    const windowOptions = WindowOptions();
 
-  await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.setMinimumSize(const Size(500, 500));
-    await windowManager.focus();
-  });
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.setMinimumSize(const Size(500, 500));
+      await windowManager.focus();
+    });
+  }
 
   HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: kIsWeb
@@ -59,10 +61,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
           //     create: (context) => NavigationIndexCubit()),
           // BlocProvider<NavigationControllerCubit>(
           //     create: (context) => NavigationControllerCubit()),
-          BlocProvider(create: (_) => AppRouterCubit()),
           BlocProvider(create: (_) => ThemeBloc()),
           BlocProvider(
               create: (_) => InternetConnectionBloc()..add(CheckConnection())),
+          if (!kIsWeb) BlocProvider(create: (_) => NavigationBarCubit()),
           // BlocProvider(
           //     create: (_) => AppBloc(authenticationRepository: authRepository)),
           //todo: merge navigation blocs

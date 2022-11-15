@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 
-import 'context.dart';
-
 extension PlatformExtension on BuildContext {
   bool get isMobile =>
-      theme.platform == TargetPlatform.iOS ||
-      theme.platform == TargetPlatform.android;
+      Theme.of(this).platform == TargetPlatform.iOS ||
+      Theme.of(this).platform == TargetPlatform.android;
 
   bool get isDesktop =>
-      theme.platform == TargetPlatform.macOS ||
-      theme.platform == TargetPlatform.windows ||
-      theme.platform == TargetPlatform.linux;
+      Theme.of(this).platform == TargetPlatform.macOS ||
+      Theme.of(this).platform == TargetPlatform.windows ||
+      Theme.of(this).platform == TargetPlatform.linux;
+}
+
+extension TargetPlatformExtension on TargetPlatform {
+  bool get isMobile =>
+      this == TargetPlatform.iOS || this == TargetPlatform.android;
+
+  bool get isDesktop =>
+      this == TargetPlatform.linux ||
+      this == TargetPlatform.macOS ||
+      this == TargetPlatform.windows;
 }

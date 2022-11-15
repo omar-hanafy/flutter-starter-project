@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-// import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'lib.dart';
 
@@ -15,7 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       title: 'Project Title',
       // onGenerateTitle: (BuildContext context) => ' Project Localized Title',
-      routerConfig: context.read<AppRouterCubit>().state,
+      routerConfig: AppRouter.appRouter,
       supportedLocales: AppLocalizations.supportedLocales,
     );
   }

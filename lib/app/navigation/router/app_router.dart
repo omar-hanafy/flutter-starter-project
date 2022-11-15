@@ -5,94 +5,85 @@ import 'package:go_router/go_router.dart';
 
 import '../../../lib.dart';
 
-Page<dynamic> _pageBuilder(BuildContext context, GoRouterState state,
-    {required Widget child}) {
-  return kIsWeb
-      ? NoTransitionPage<void>(
-          key: state.pageKey,
-          child: child,
-        )
-      : MaterialPage<void>(key: state.pageKey, child: child);
-}
+class AppRouter {
+  static Page<dynamic> _pageBuilder(BuildContext context, GoRouterState state,
+      {required Widget child}) {
+    return kIsWeb
+        ? NoTransitionPage<void>(
+            key: state.pageKey,
+            child: child,
+          )
+        : MaterialPage<void>(key: state.pageKey, child: child);
+  }
 
-class AppRouterCubit extends Cubit<GoRouter> {
-  AppRouterCubit()
-      : super(
-          GoRouterInitial(
-            routes: <RouteBase>[
-              // above is the GoRoute for the nav bar items only.
-              GoRoute(
-                  path: '/',
-                  redirect: (BuildContext context, GoRouterState state) =>
-                      '/${RouteName.home.name}'),
-              GoRoute(
-                  path: '/${RouteName.home.name}',
-                  name: RouteName.home.name,
-                  routes: homeSubRoutes,
-                  pageBuilder: (context, state) {
-                    return _pageBuilder(context, state,
-                        child: kIsWeb
-                            ? const HomeView()
-                            : context.isDesktop
-                                ? const DesktopNavigationBar()
-                                : const MobileNavigationBar());
-                  }),
-              GoRoute(
-                path: '/${RouteName.explore.name}',
-                name: RouteName.explore.name,
-                routes: exploreSubRoutes,
-                pageBuilder: (context, state) =>
-                    _pageBuilder(context, state, child: const ExploreView()),
-              ),
-              GoRoute(
-                path: '/${RouteName.cart.name}',
-                name: RouteName.cart.name,
-                routes: carteSubRoutes,
-                pageBuilder: (context, state) =>
-                    _pageBuilder(context, state, child: const CartView()),
-              ),
-              GoRoute(
-                path: '/${RouteName.orders.name}',
-                name: RouteName.orders.name,
-                routes: ordersSubRoutes,
-                pageBuilder: (context, state) =>
-                    _pageBuilder(context, state, child: const OrdersView()),
-              ),
-              GoRoute(
-                path: '/${RouteName.account.name}',
-                name: RouteName.account.name,
-                routes: accountSubRoutes,
-                pageBuilder: (context, state) =>
-                    _pageBuilder(context, state, child: const AccountView()),
-              ),
-            ],
+  static final GlobalKey<NavigatorState> _rootNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'root');
+  static final GlobalKey<NavigatorState> _shellNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'shell');
+
+  static final GoRouter _appRouter = GoRouter(
+    observers: <NavigatorObserver>[AppNavObserver()],
+    initialLocation: '/${RouteName.home.name}',
+    navigatorKey: _rootNavigatorKey,
+    errorPageBuilder: (context, state) => _pageBuilder(context, state,
+        child: RouterErrorPageBuilder(routerState: state)),
+    errorBuilder: (context, state) =>
+        RouterErrorPageBuilder(routerState: state),
+    routes: [
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) => RouterPageBuilder(child: child),
+        routes: <RouteBase>[
+          // above is the GoRoute for the nav bar items only.
+          GoRoute(
+              path: '/',
+              redirect: (context, state) => '/${RouteName.home.name}'),
+          GoRoute(
+              path: '/${RouteName.home.name}',
+              name: RouteName.home.name,
+              routes: homeSubRoutes,
+              pageBuilder: (context, state) {
+                return _pageBuilder(context, state,
+                    child: kIsWeb
+                        ? const HomeView()
+                        : context.isDesktop
+                            ? const DesktopNavigationBar()
+                            : const MobileNavigationBar());
+              }),
+          GoRoute(
+            path: '/${RouteName.explore.name}',
+            name: RouteName.explore.name,
+            routes: exploreSubRoutes,
+            pageBuilder: (context, state) =>
+                _pageBuilder(context, state, child: const ExploreView()),
           ),
-        );
-}
+          GoRoute(
+            path: '/${RouteName.cart.name}',
+            name: RouteName.cart.name,
+            routes: carteSubRoutes,
+            pageBuilder: (context, state) =>
+                _pageBuilder(context, state, child: const CartView()),
+          ),
+          GoRoute(
+            path: '/${RouteName.orders.name}',
+            name: RouteName.orders.name,
+            routes: ordersSubRoutes,
+            pageBuilder: (context, state) =>
+                _pageBuilder(context, state, child: const OrdersView()),
+          ),
+          GoRoute(
+            path: '/${RouteName.account.name}',
+            name: RouteName.account.name,
+            routes: accountSubRoutes,
+            pageBuilder: (context, state) =>
+                _pageBuilder(context, state, child: const AccountView()),
+          ),
+        ],
+      ),
+    ],
+  );
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shell');
-
-class GoRouterInitial extends GoRouter {
-  GoRouterInitial({required List<RouteBase> routes})
-      : super(
-          observers: <NavigatorObserver>[AppNavObserver()],
-          initialLocation: '/${RouteName.home.name}',
-          navigatorKey: _rootNavigatorKey,
-          errorBuilder: (BuildContext context, GoRouterState state) =>
-              RouterErrorPageBuilder(routerState: state),
-          routes: [
-            ShellRoute(
-              navigatorKey: _shellNavigatorKey,
-              routes: routes,
-              builder:
-                  (BuildContext context, GoRouterState state, Widget child) =>
-                      RouterPageBuilder(child: child),
-            ),
-          ],
-        );
+  static GoRouter get appRouter => _appRouter;
 }
 
 class RouterPageBuilder extends StatelessWidget {
@@ -114,11 +105,7 @@ class RouterPageBuilder extends StatelessWidget {
                 data: context.mq.copyWith(
                     textScaleFactor:
                         AppBreakpoint.getTextScale(context.widthPx)),
-                child: kIsWeb
-                    ? WebNavigationBar(child: child)
-                    : MultiBlocProvider(
-                        providers: NavigationHelper.navBlocProviders,
-                        child: child),
+                child: kIsWeb ? WebNavigationBar(child: child) : child,
               );
             }),
           ),
