@@ -12,7 +12,7 @@ class AppLogo extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.pushNamed(name: RouteName.home);
-        if (closeDrawer) context.pop();
+        if (closeDrawer) context.pop<bool>(true);
       },
       child: Text(
         'App Logo',

@@ -1,0 +1,14 @@
+name: hive_api
+description: this package deals with hive api integration.
+
+version: 1.0.0+1
+publish_to: 'none'
+
+environment:
+  sdk: '>=2.18.6 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0

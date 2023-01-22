@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import '../app.dart';
 
 /// Namespace for the App [ThemeData].
-abstract class AppTheme {
-  static ColorScheme get _defaultColorScheme => const ColorScheme(
-        brightness: Brightness.light,
+class AppTheme {
+  AppTheme(this.languageCode);
+
+  final String languageCode;
+
+  static ColorScheme _defaultColorScheme(Brightness br) => ColorScheme(
+        brightness: br,
         surface: AppColor.primaryColor,
         onSurface: AppColor.onPrimaryColor,
         error: AppColor.error,
@@ -18,22 +22,21 @@ abstract class AppTheme {
         onSecondary: AppColor.onPrimaryColor,
       );
 
-  static ThemeData get _defaultThemeData => ThemeData(
-        primaryColor: AppColor.primaryColor,
-        scaffoldBackgroundColor: AppColor.scaffoldBackground,
-        toggleableActiveColor: AppColor.primaryColor,
-        colorScheme: _defaultColorScheme,
-      );
+  ThemeData get _defaultThemeData => ThemeData(
+      fontFamily: languageCode == 'ar' ? 'Cairo' : 'SF-Pro-Rounded',
+      toggleableActiveColor: AppColor.primaryColor,
+      primaryColor: AppColor.primaryColor);
 
-  static ThemeData get _darkThemeData => ThemeData(
-      scaffoldBackgroundColor: AppColor.scaffoldBackgroundDark,
-      colorScheme: _defaultColorScheme.copyWith(brightness: Brightness.dark));
+  Color getAdaptiveScaffoldBackgroundColor(Brightness br) =>
+      br == Brightness.light
+          ? AppColor.scaffoldBackground
+          : AppColor.scaffoldBackgroundDark;
 
-  static ThemeData getAdaptiveTheme(Brightness brightness) =>
-      brightness == Brightness.light ? _defaultThemeData : _darkThemeData;
+  ThemeData getAdaptiveTheme(Brightness br) => _defaultThemeData.copyWith(
+      colorScheme: _defaultColorScheme(br),
+      scaffoldBackgroundColor: getAdaptiveScaffoldBackgroundColor(br));
 }
 
-//
 //   static TextTheme get _normalTextTheme {
 //     return TextTheme(
 //       headline1: _defaultThemeData.textTheme.headline1,

@@ -29,27 +29,37 @@ class AppRouter {
         child: RouterErrorPageBuilder(routerState: state)),
     errorBuilder: (context, state) =>
         RouterErrorPageBuilder(routerState: state),
+    // redirect to the login page if the user is not logged in
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) => RouterPageBuilder(child: child),
+        builder: (context, state, child) =>
+            RouterPageBuilder(state: state, child: child),
         routes: <RouteBase>[
           // above is the GoRoute for the nav bar items only.
           GoRoute(
               path: '/',
               redirect: (context, state) => '/${RouteName.home.name}'),
           GoRoute(
-              path: '/${RouteName.home.name}',
-              name: RouteName.home.name,
-              routes: homeSubRoutes,
-              pageBuilder: (context, state) {
-                return _pageBuilder(context, state,
-                    child: kIsWeb
-                        ? const HomeView()
-                        : context.isDesktop
-                            ? const DesktopNavigationBar()
-                            : const MobileNavigationBar());
-              }),
+            path: '/${RouteName.login.name}',
+            name: RouteName.login.name,
+            routes: exploreSubRoutes,
+            pageBuilder: (context, state) =>
+                _pageBuilder(context, state, child: const ExploreView()),
+          ),
+          GoRoute(
+            path: '/${RouteName.home.name}',
+            name: RouteName.home.name,
+            routes: homeSubRoutes,
+            pageBuilder: (context, state) {
+              return _pageBuilder(context, state,
+                  child: kIsWeb
+                      ? const HomeView()
+                      : context.isDesktop
+                          ? const DesktopNavigationBar()
+                          : const MobileNavigationBar());
+            },
+          ),
           GoRoute(
             path: '/${RouteName.explore.name}',
             name: RouteName.explore.name,
@@ -87,16 +97,22 @@ class AppRouter {
 }
 
 class RouterPageBuilder extends StatelessWidget {
-  const RouterPageBuilder({super.key, required this.child});
+  const RouterPageBuilder(
+      {super.key, required this.child, required this.state});
 
   final Widget child;
+  final GoRouterState state;
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('location name is ${state.name}');
+    const locale = Locale('EN', 'EG');
+    final appTheme = AppTheme(locale.languageCode);
+
     return BlocBuilder<ThemeBloc, Brightness>(
       builder: (context, brightness) {
         return Theme(
-          data: AppTheme.getAdaptiveTheme(brightness),
+          data: appTheme.getAdaptiveTheme(brightness),
           child: Localizations(
             locale: const Locale('en'),
             delegates: AppLocalizations.localizationsDelegates,
@@ -125,7 +141,7 @@ class RouterErrorPageBuilder extends StatelessWidget {
     return BlocBuilder<ThemeBloc, Brightness>(
       builder: (context, brightness) {
         return Theme(
-          data: AppTheme.getAdaptiveTheme(brightness),
+          data: AppTheme('en').getAdaptiveTheme(brightness),
           child: Localizations(
             locale: const Locale('en'),
             delegates: AppLocalizations.localizationsDelegates,

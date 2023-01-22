@@ -28,6 +28,7 @@ enum RouteName {
   cart,
   orders,
   account,
+  login,
 }
 
 extension RouteNameExtension on RouteName {
@@ -43,6 +44,8 @@ extension RouteNameExtension on RouteName {
         return 'Orders';
       case RouteName.account:
         return 'Account';
+      case RouteName.login:
+        return 'Login';
     }
   }
 }
@@ -60,6 +63,8 @@ extension RouteStringExtension on String {
         return RouteName.orders;
       case 'account':
         return RouteName.account;
+      case 'login':
+        return RouteName.login;
       default:
         return RouteName.home;
     }

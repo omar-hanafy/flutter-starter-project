@@ -13,7 +13,7 @@ class AppUserChanged extends AppEvent {
   @visibleForTesting
   const AppUserChanged(this.user);
 
-  final FirebaseUserModel user;
+  final User user;
 
   @override
   List<Object> get props => [user];
