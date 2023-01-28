@@ -27,7 +27,7 @@ class MobileNavigationBar extends StatelessWidget {
                     //   NavigatorHelper(context).pushNamed(name: 'home');
                     // });
                   } else {
-                    context.read<NavigationBarCubit>().goIndex(index);
+                    context.navigationBarCubit.goIndex(index);
                   }
                 },
                 selectedItemColor: AppColor.black,

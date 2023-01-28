@@ -33,7 +33,7 @@ class DesktopNavigationBar extends StatelessWidget {
                       //   NavigatorHelper(context).pushNamed(name: 'home');
                       // });
                     } else {
-                      context.read<NavigationBarCubit>().goIndex(index);
+                      context.navigationBarCubit.goIndex(index);
                     }
                   },
                   labelType: NavigationRailLabelType.all,

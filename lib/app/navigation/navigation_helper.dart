@@ -1,25 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../lib.dart';
-
-extension NavigationHelperExtension on BuildContext {
-  void pushNamed(
-          {bool pushGlobally = false,
-          required RouteName name,
-          Map<String, String> queryParams = const {}}) =>
-      NavigationHelper(this).pushNamed(
-          name: name, pushGlobally: pushGlobally, queryParams: queryParams);
-}
 
 class NavigationHelper {
   NavigationHelper(this.context);
 
   final BuildContext context;
 
-  late final navCubit = context.read<NavigationBarCubit>();
+  late final navCubit = context.navigationBarCubit;
 
   // for non web
   static final List<Widget> _navPageRouters = [

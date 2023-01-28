@@ -1,6 +1,6 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../app.dart';
 
 class NoAccount extends StatelessWidget {
   const NoAccount({super.key});
@@ -15,16 +15,13 @@ class NoAccount extends StatelessWidget {
         ),
         ElevatedButton(
             onPressed: () {
-              context.read<AuthenticationRepository>().logInWithGoogle();
+              context.authenticationRepository.logInWithGoogle();
             },
             child: const Text('Sign In With Google')),
         ElevatedButton(
             onPressed: () {
-              context
-                  .read<AuthenticationRepository>()
-                  .logInWithEmailAndPassword(
-                      email: "devomarkhaled615@gmail.com",
-                      password: "kk888888");
+              context.authenticationRepository.logInWithEmailAndPassword(
+                  email: "devomarkhaled615@gmail.com", password: "kk888888");
             },
             child: const Text('Sign In With Apple')),
       ],

@@ -118,9 +118,8 @@ class RouterPageBuilder extends StatelessWidget {
             delegates: AppLocalizations.localizationsDelegates,
             child: Builder(builder: (context) {
               return MediaQuery(
-                data: context.mq.copyWith(
-                    textScaleFactor:
-                        AppBreakpoint.getTextScale(context.widthPx)),
+                data: context.mq
+                    .copyWith(textScaleFactor: context.textScaleFactor),
                 child: kIsWeb ? WebNavigationBar(child: child) : child,
               );
             }),
@@ -147,9 +146,8 @@ class RouterErrorPageBuilder extends StatelessWidget {
             delegates: AppLocalizations.localizationsDelegates,
             child: Builder(builder: (context) {
               return MediaQuery(
-                data: context.mq.copyWith(
-                    textScaleFactor:
-                        AppBreakpoint.getTextScale(context.widthPx)),
+                data: context.mq
+                    .copyWith(textScaleFactor: context.textScaleFactor),
                 child: WebNavigationBar(
                     child: Center(child: Text('${routerState.error}'))),
               );

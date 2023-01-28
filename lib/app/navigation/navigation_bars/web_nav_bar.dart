@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app.dart';
 
@@ -11,19 +10,16 @@ class WebNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = context.widthPx;
-    debugPrint(
-        '${AppBreakpoint.getScreenType(context)} screen width: $screenWidth');
+    debugPrint('${context.screenType} screen width: $screenWidth');
 
-    final isMedium =
-        AppBreakpoint.isSmallerThan(screenWidth, ScreenType.lTablet);
+    final isMedium = context.isSmallerThan(ScreenType.lTablet);
 
-    final isSmall =
-        AppBreakpoint.isSmallerThan(screenWidth, ScreenType.sTablet);
+    final isSmall = context.isSmallerThan(ScreenType.sTablet);
 
-    final navigationItems = NavigationHelper(context).webNavItems;
+    final navigationItems = context.webNavItems;
 
     final Widget changeBrightnessIcon = IconButton(
-      onPressed: () => context.read<ThemeBloc>().add(ChangeBrightness(context)),
+      onPressed: () => context.themeBloc.add(ChangeBrightness(context)),
       icon: Icon(context.isDark ? AppIcon.darkMode : AppIcon.darkModeOutlined),
     );
 
@@ -123,8 +119,7 @@ class WebNavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSmall =
-        AppBreakpoint.isSmallerThan(context.widthPx, ScreenType.sTablet);
+    final isSmall = context.isSmallerThan(ScreenType.sTablet);
     return isSmall
         ? ListTile(
             title: Text(label,
