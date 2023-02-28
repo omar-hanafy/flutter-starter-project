@@ -23,7 +23,7 @@ class AppRouter {
 
   static final GoRouter _appRouter = GoRouter(
     observers: <NavigatorObserver>[AppNavObserver()],
-    initialLocation: '/${RouteName.home.name}',
+    initialLocation: RouteName.home.path,
     navigatorKey: _rootNavigatorKey,
     errorPageBuilder: (context, state) => _pageBuilder(context, state,
         child: RouterErrorPageBuilder(routerState: state)),
@@ -38,17 +38,18 @@ class AppRouter {
         routes: <RouteBase>[
           // above is the GoRoute for the nav bar items only.
           GoRoute(
-              path: '/',
-              redirect: (context, state) => '/${RouteName.home.name}'),
+            path: '/',
+            redirect: (context, state) => RouteName.home.path,
+          ),
           GoRoute(
-            path: '/${RouteName.login.name}',
+            path: RouteName.login.path,
             name: RouteName.login.name,
             routes: exploreSubRoutes,
             pageBuilder: (context, state) =>
                 _pageBuilder(context, state, child: const ExploreView()),
           ),
           GoRoute(
-            path: '/${RouteName.home.name}',
+            path: RouteName.home.path,
             name: RouteName.home.name,
             routes: homeSubRoutes,
             pageBuilder: (context, state) {
@@ -61,28 +62,28 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: '/${RouteName.explore.name}',
+            path: RouteName.explore.path,
             name: RouteName.explore.name,
             routes: exploreSubRoutes,
             pageBuilder: (context, state) =>
                 _pageBuilder(context, state, child: const ExploreView()),
           ),
           GoRoute(
-            path: '/${RouteName.cart.name}',
+            path: RouteName.cart.path,
             name: RouteName.cart.name,
             routes: carteSubRoutes,
             pageBuilder: (context, state) =>
                 _pageBuilder(context, state, child: const CartView()),
           ),
           GoRoute(
-            path: '/${RouteName.orders.name}',
+            path: RouteName.orders.path,
             name: RouteName.orders.name,
             routes: ordersSubRoutes,
             pageBuilder: (context, state) =>
                 _pageBuilder(context, state, child: const OrdersView()),
           ),
           GoRoute(
-            path: '/${RouteName.account.name}',
+            path: RouteName.account.path,
             name: RouteName.account.name,
             routes: accountSubRoutes,
             pageBuilder: (context, state) =>

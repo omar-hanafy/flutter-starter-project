@@ -81,6 +81,8 @@ extension RouteNameExtension on RouteName {
         return 'Login';
     }
   }
+
+  String get path => '/$name';
 }
 
 extension RouteStringExtension on String {
