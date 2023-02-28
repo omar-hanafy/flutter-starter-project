@@ -39,7 +39,7 @@ class AppTheme {
 
 //   static TextTheme get _normalTextTheme {
 //     return TextTheme(
-//       headline1: _defaultThemeData.textTheme.headline1,
+//       headline1: _defaultThemeData.textTheme.displayLarge,
 //       headline2: _defaultThemeData.textTheme.headline2,
 //       headline3: _defaultThemeData.textTheme.headline3,
 //       headline4: _defaultThemeData.textTheme.headline4,
@@ -57,9 +57,9 @@ class AppTheme {
 //
 //  static TextTheme get _smallTextTheme {
 //     return TextTheme(
-//       headline1: _defaultThemeData.textTheme.headline1?.copyWith(
+//       headline1: _defaultThemeData.textTheme.displayLarge?.copyWith(
 //         // color: brightness == Brightness.light ? Colors.black : Colors.white,
-//         fontSize: _normalTextTheme.headline1!.fontSize! * _smallTextScaleFactor,
+//         fontSize: _normalTextTheme.displayLarge!.fontSize! * _smallTextScaleFactor,
 //       ),
 //       headline2: _defaultThemeData.textTheme.headline2?.copyWith(
 //         // color: brightness == Brightness.light ? Colors.black : Colors.white,
@@ -114,9 +114,9 @@ class AppTheme {
 //
 //   static  TextTheme get _largeTextTheme {
 //     return TextTheme(
-//       headline1: _defaultThemeData.textTheme.headline1?.copyWith(
+//       headline1: _defaultThemeData.textTheme.displayLarge?.copyWith(
 //         // color: brightness == Brightness.light ? Colors.black : Colors.white,
-//         fontSize: _normalTextTheme.headline1!.fontSize! * _largeTextScaleFactor,
+//         fontSize: _normalTextTheme.displayLarge!.fontSize! * _largeTextScaleFactor,
 //       ),
 //       headline2: _defaultThemeData.textTheme.headline2?.copyWith(
 //         // color: brightness == Brightness.light ? Colors.black : Colors.white,

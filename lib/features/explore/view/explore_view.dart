@@ -19,7 +19,7 @@ class _ExploreViewState extends State<ExploreView>
     super.build(context);
     return Scaffold(
       body: Center(
-        child: Text('Explore', style: context.textTheme.headline1),
+        child: Text('Explore', style: context.textTheme.displayLarge),
       ),
     );
   }

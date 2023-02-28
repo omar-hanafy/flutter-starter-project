@@ -19,7 +19,7 @@ class _CartViewState extends State<CartView>
     super.build(context);
     return Scaffold(
       body: Center(
-        child: Text('Cart', style: context.textTheme.headline1),
+        child: Text('Cart', style: context.textTheme.displayLarge),
       ),
     );
   }

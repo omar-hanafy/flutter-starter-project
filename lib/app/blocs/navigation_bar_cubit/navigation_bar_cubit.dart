@@ -13,7 +13,7 @@ class NavigationBarCubit extends Cubit<NavigationBarState> {
     if (state.controller.hasClients) {
       state.controller.jumpToPage(index);
       emit(
-        state.copyWith(index: index, controller: state.controller),
+        NavigationBarState(index: index, controller: state.controller),
       );
     }
   }
@@ -23,7 +23,7 @@ class NavigationBarCubit extends Cubit<NavigationBarState> {
         NavigationHelper.navPageRouters.length <= name.index) {
       state.controller.jumpToPage(name.index);
       emit(
-        state.copyWith(index: name.index, controller: state.controller),
+        NavigationBarState(index: name.index, controller: state.controller),
       );
     }
   }

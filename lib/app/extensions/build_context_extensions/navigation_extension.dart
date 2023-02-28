@@ -8,7 +8,9 @@ extension NavigationExtension on BuildContext {
           required RouteName name,
           Map<String, String> queryParams = const {}}) =>
       NavigationHelper(this).pushNamed(
-          name: name, pushGlobally: pushGlobally, queryParams: queryParams);
+          routeName: name,
+          pushGlobally: pushGlobally,
+          queryParams: queryParams);
 
-  List<WebNavBarItem> get webNavItems => NavigationHelper(this).webNavItems;
+  NavigationHelper get navigationHelper => NavigationHelper(this);
 }

@@ -27,27 +27,27 @@ class NavigationHelper {
         BottomNavigationBarItem(
           backgroundColor: AppColor.primaryColor,
           icon: const Icon(AppIcon.homeOutlined),
-          label: AppLocalizations.of(context)!.home,
+          label: context.l10n.home,
         ),
         BottomNavigationBarItem(
           backgroundColor: AppColor.primaryColor,
           icon: const Icon(AppIcon.searchOutlined),
-          label: AppLocalizations.of(context)!.explore,
+          label: context.l10n.explore,
         ),
         BottomNavigationBarItem(
           backgroundColor: AppColor.primaryColor,
           icon: const Icon(AppIcon.shoppingCartOutlined),
-          label: AppLocalizations.of(context)!.cart,
+          label: context.l10n.cart,
         ),
         BottomNavigationBarItem(
           backgroundColor: AppColor.primaryColor,
           icon: const Icon(AppIcon.archiveOutlined),
-          label: AppLocalizations.of(context)!.orders,
+          label: context.l10n.orders,
         ),
         BottomNavigationBarItem(
           backgroundColor: AppColor.primaryColor,
           icon: const Icon(AppIcon.personOutlined),
-          label: AppLocalizations.of(context)!.account,
+          label: context.l10n.account,
         ),
       ];
 
@@ -55,49 +55,85 @@ class NavigationHelper {
   List<NavigationRailDestination> get desktopNavItems => [
         NavigationRailDestination(
           icon: const Icon(AppIcon.homeOutlined),
-          label: Text(AppLocalizations.of(context)!.home),
+          label: Text(
+            context.l10n.home,
+          ),
         ),
         NavigationRailDestination(
           icon: const Icon(AppIcon.searchOutlined),
-          label: Text(AppLocalizations.of(context)!.explore),
+          label: Text(
+            context.l10n.explore,
+          ),
         ),
         NavigationRailDestination(
           icon: const Icon(AppIcon.shoppingCartOutlined),
-          label: Text(AppLocalizations.of(context)!.cart),
+          label: Text(
+            context.l10n.cart,
+          ),
         ),
         NavigationRailDestination(
           icon: const Icon(AppIcon.archiveOutlined),
-          label: Text(AppLocalizations.of(context)!.orders),
+          label: Text(
+            context.l10n.orders,
+          ),
         ),
         NavigationRailDestination(
           icon: const Icon(AppIcon.personOutlined),
-          label: Text(AppLocalizations.of(context)!.account),
+          label: Text(
+            context.l10n.account,
+          ),
         ),
       ];
 
   // for web (customized)
   List<WebNavBarItem> get webNavItems => [
         WebNavBarItem(
-            icon: const Icon(AppIcon.homeOutlined),
-            routeName: RouteName.home,
-            label: AppLocalizations.of(context)!.home),
+          icon: const Icon(AppIcon.homeOutlined),
+          routeName: RouteName.home,
+          label: context.l10n.home,
+        ),
         WebNavBarItem(
-            icon: const Icon(AppIcon.searchOutlined),
-            routeName: RouteName.explore,
-            label: AppLocalizations.of(context)!.explore),
+          icon: const Icon(AppIcon.searchOutlined),
+          routeName: RouteName.explore,
+          label: context.l10n.explore,
+        ),
         WebNavBarItem(
-            icon: const Icon(AppIcon.shoppingCartOutlined),
-            routeName: RouteName.cart,
-            label: AppLocalizations.of(context)!.cart),
+          icon: const Icon(AppIcon.shoppingCartOutlined),
+          routeName: RouteName.cart,
+          label: context.l10n.cart,
+        ),
         WebNavBarItem(
-            icon: const Icon(AppIcon.archiveOutlined),
-            routeName: RouteName.orders,
-            label: AppLocalizations.of(context)!.orders),
+          icon: const Icon(AppIcon.archiveOutlined),
+          routeName: RouteName.orders,
+          label: context.l10n.orders,
+        ),
         WebNavBarItem(
-            icon: const Icon(AppIcon.personOutlined),
-            routeName: RouteName.account,
-            label: AppLocalizations.of(context)!.account),
+          icon: const Icon(AppIcon.personOutlined),
+          routeName: RouteName.account,
+          label: context.l10n.account,
+        ),
       ];
+
+  GoRouter get _getState {
+    if (kIsWeb) {
+      return AppRouter.appRouter;
+    } else {
+      switch (navCubit.state.index) {
+        case 0:
+          return NavBarRouters.homeRouter;
+        case 1:
+          return NavBarRouters.exploreRouter;
+        case 2:
+          return NavBarRouters.cartRouter;
+        case 3:
+          return NavBarRouters.ordersRouter;
+        case 4:
+          return NavBarRouters.accountRouter;
+        default:
+          return NavBarRouters.homeRouter;
+      }
+    }
+  }
 
   List<String> get pages {
     var location = _getState.location;
@@ -130,42 +166,45 @@ class NavigationHelper {
 
   String get getTitle => lastPage.getRouteName.fullName;
 
-  void pushNamed(
-      {bool pushGlobally = false,
-      required RouteName name,
-      Map<String, String> queryParams = const {}}) {
+  void pushNamed({
+    bool pushGlobally = false,
+    required RouteName routeName,
+    Map<String, String> queryParams = const {},
+  }) {
     if (kIsWeb || pushGlobally) {
-      AppRouter.appRouter.goNamed(name.name, queryParams: queryParams);
+      AppRouter.appRouter.goNamed(routeName.name, queryParams: queryParams);
     } else {
-      if (NavigationHelper.navPageRouters.length <= name.index) {
-        navCubit.goName(name);
+      if (_navPageRouters.length <= routeName.index) {
+        /// only change navigation bar index.
+        navCubit.goName(routeName);
       } else {
-        _getState.pushNamed(name.name, queryParams: queryParams);
+        /// navigating using the router of the current navigation bar index
+        _getState.goNamed(routeName.name, queryParams: queryParams);
       }
     }
   }
 
-  GoRouter get _getState {
-    if (kIsWeb) {
-      return AppRouter.appRouter;
+  void pushReplacement({
+    bool pushGlobally = false,
+    required RouteName routeName,
+    Map<String, String> queryParams = const {},
+  }) {
+    if (kIsWeb || pushGlobally) {
+      AppRouter.appRouter.pushReplacementNamed(
+        routeName.name,
+        queryParams: queryParams,
+      );
     } else {
-      switch (navCubit.state.index) {
-        case 0:
-          return NavBarRouters.homeRouter;
-        case 1:
-          return NavBarRouters.exploreRouter;
-        case 2:
-          return NavBarRouters.cartRouter;
-        case 3:
-          return NavBarRouters.ordersRouter;
-        case 4:
-          return NavBarRouters.accountRouter;
-        default:
-          return NavBarRouters.homeRouter;
+      if (_navPageRouters.length <= routeName.index) {
+        /// only change navigation bar index.
+        navCubit.goName(routeName);
+      } else {
+        /// navigating using the router of the current navigation bar index
+        _getState.pushReplacementNamed(
+          routeName.name,
+          queryParams: queryParams,
+        );
       }
     }
   }
-
-  void pushReplacement(
-      {required RouteName name, Map<String, String> queryParams = const {}}) {}
 }

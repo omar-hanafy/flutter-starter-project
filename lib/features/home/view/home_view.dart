@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 //     super.build(context);
 //     return Scaffold(
 //       body: Center(
-//         child: Text('Home', style: context.textTheme.headline1),
+//         child: Text('Home', style: context.textTheme.displayLarge),
 //       ),
 //     );
 //   }

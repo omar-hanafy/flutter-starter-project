@@ -16,7 +16,7 @@ class ThemeBloc extends HydratedBloc<ChangeBrightness, Brightness> {
   }
 
   Brightness _getBrightness(ChangeBrightness event) {
-    switch (event.brightnessType) {
+    switch (event.changeType) {
       case BrightnessTypesEvent.dark:
         return Brightness.dark;
 
@@ -41,17 +41,8 @@ class ThemeBloc extends HydratedBloc<ChangeBrightness, Brightness> {
 
 class ChangeBrightness {
   ChangeBrightness(this.context,
-      {this.brightnessType = BrightnessTypesEvent.toggle});
+      {this.changeType = BrightnessTypesEvent.toggle});
 
   final BuildContext context;
-  final BrightnessTypesEvent brightnessType;
-}
-
-class BrightnessChanged {
-  BrightnessChanged(this.brightness);
-
-  final Brightness brightness;
-
-  @override
-  String toString() => 'ThemeChanged: New Theme Brightness is $brightness';
+  final BrightnessTypesEvent changeType;
 }

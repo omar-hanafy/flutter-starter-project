@@ -39,7 +39,7 @@ class DesktopNavigationBar extends StatelessWidget {
                   labelType: NavigationRailLabelType.all,
                   // leading: widget,
                   // trailing:
-                  destinations: NavigationHelper(context).desktopNavItems),
+                  destinations: context.navigationHelper.desktopNavItems),
             ),
             Expanded(
                 child: PageView(

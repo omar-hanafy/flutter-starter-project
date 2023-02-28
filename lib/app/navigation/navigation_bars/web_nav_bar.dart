@@ -16,7 +16,7 @@ class WebNavigationBar extends StatelessWidget {
 
     final isSmall = context.isSmallerThan(ScreenType.sTablet);
 
-    final navigationItems = context.webNavItems;
+    final navigationItems = context.navigationHelper.webNavItems;
 
     final Widget changeBrightnessIcon = IconButton(
       onPressed: () => context.themeBloc.add(ChangeBrightness(context)),
@@ -122,8 +122,10 @@ class WebNavBarItem extends StatelessWidget {
     final isSmall = context.isSmallerThan(ScreenType.sTablet);
     return isSmall
         ? ListTile(
-            title: Text(label,
-                style: _getTextStyle(context, routeName: routeName)),
+            title: Text(
+              label,
+              style: _getTextStyle(context, routeName: routeName),
+            ),
             onTap: () {
               context
                 ..pushNamed(name: routeName)
