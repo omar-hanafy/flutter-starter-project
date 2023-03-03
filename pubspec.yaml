@@ -21,6 +21,7 @@ dependencies:
   url_launcher: ^6.1.10
   internet_connection_checker: ^1.0.0+1
   universal_html: ^2.0.9
+  scrolls_to_top: ^2.1.0
 
   authentication_repository:
     path: ./packages/authentication_repository

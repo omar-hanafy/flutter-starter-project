@@ -57,17 +57,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     () async => runApp(
       MultiBlocProvider(
         providers: [
-          // BlocProvider<NavigationIndexCubit>(
-          //     create: (context) => NavigationIndexCubit()),
-          // BlocProvider<NavigationControllerCubit>(
-          //     create: (context) => NavigationControllerCubit()),
           BlocProvider(create: (_) => ThemeBloc()),
           BlocProvider(
-              create: (_) => InternetConnectionBloc()..add(CheckConnection())),
+            create: (_) => InternetConnectionBloc()..add(CheckConnection()),
+          ),
           if (!kIsWeb) BlocProvider(create: (_) => NavigationBarCubit()),
-          // BlocProvider(
-          //     create: (_) => AppBloc(authenticationRepository: authRepository)),
-          //todo: merge navigation blocs
         ],
         child: await builder(),
       ),
@@ -80,4 +74,25 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     ///    if any, and to handle errors thrown synchronously by the call to body.
     (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
+}
+
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onTransition(
+      Bloc<dynamic, dynamic> bloc,
+      Transition<dynamic, dynamic> transition,
+      ) {
+    super.onTransition(bloc, transition);
+    log(transition.toString());
+  }
+
+  @override
+  void onError(
+      BlocBase<dynamic> bloc,
+      Object error,
+      StackTrace stackTrace,
+      ) {
+    log(error.toString());
+    super.onError(bloc, error, stackTrace);
+  }
 }

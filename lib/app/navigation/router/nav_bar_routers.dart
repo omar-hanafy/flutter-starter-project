@@ -18,7 +18,7 @@ class NavBarItemRouter extends StatelessWidget {
   }
 }
 
-class NavBarRouters {
+abstract class NavBarRouters {
   static final GoRouter _homeRouter = GoRouter(
     initialLocation: RouteName.home.path,
     // errorBuilder: (BuildContext context, GoRouterState state) =>

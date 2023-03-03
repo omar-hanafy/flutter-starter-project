@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app.dart';
 
@@ -13,4 +14,6 @@ extension NavigationExtension on BuildContext {
           queryParams: queryParams);
 
   NavigationHelper get navigationHelper => NavigationHelper(this);
+
+  NavigationBarCubit get navigationBarCubit => read<NavigationBarCubit>();
 }

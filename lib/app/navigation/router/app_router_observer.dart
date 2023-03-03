@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 /// The Navigator observer.
-class AppNavObserver extends NavigatorObserver {
-  /// Creates a [AppNavObserver].
-  AppNavObserver() {
+class AppRouterObserver extends NavigatorObserver {
+  /// Creates a [AppRouterObserver].
+  AppRouterObserver() {
     log.onRecord.listen((LogRecord e) => debugPrint('$e'));
   }
 

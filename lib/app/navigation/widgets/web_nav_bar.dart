@@ -110,7 +110,7 @@ class WebNavBarItem extends StatelessWidget {
     final firstPage = NavigationHelper(context).firstPage;
     if (firstPage == routeName.name) {
       return const TextStyle(
-          color: AppColor.primaryColor,
+          color: AppColors.primaryColor,
           fontSize: 20,
           fontWeight: FontWeight.bold);
     }

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../lib.dart';
+import '../../../lib.dart';
 
 class NavigationHelper {
   NavigationHelper(this.context);
@@ -12,7 +12,7 @@ class NavigationHelper {
   late final navCubit = context.navigationBarCubit;
 
   // for non web
-  static final List<Widget> _navPageRouters = [
+  static final List<Widget> navPageRouters = [
     NavBarItemRouter(router: NavBarRouters.homeRouter),
     NavBarItemRouter(router: NavBarRouters.exploreRouter),
     NavBarItemRouter(router: NavBarRouters.cartRouter),
@@ -20,32 +20,30 @@ class NavigationHelper {
     NavBarItemRouter(router: NavBarRouters.accountRouter),
   ];
 
-  static List<Widget> get navPageRouters => _navPageRouters;
-
   // for mobile
   List<BottomNavigationBarItem> get mobileNavItems => [
         BottomNavigationBarItem(
-          backgroundColor: AppColor.primaryColor,
+          backgroundColor: AppColors.primaryColor,
           icon: const Icon(AppIcon.homeOutlined),
           label: context.l10n.home,
         ),
         BottomNavigationBarItem(
-          backgroundColor: AppColor.primaryColor,
+          backgroundColor: AppColors.primaryColor,
           icon: const Icon(AppIcon.searchOutlined),
           label: context.l10n.explore,
         ),
         BottomNavigationBarItem(
-          backgroundColor: AppColor.primaryColor,
+          backgroundColor: AppColors.primaryColor,
           icon: const Icon(AppIcon.shoppingCartOutlined),
           label: context.l10n.cart,
         ),
         BottomNavigationBarItem(
-          backgroundColor: AppColor.primaryColor,
+          backgroundColor: AppColors.primaryColor,
           icon: const Icon(AppIcon.archiveOutlined),
           label: context.l10n.orders,
         ),
         BottomNavigationBarItem(
-          backgroundColor: AppColor.primaryColor,
+          backgroundColor: AppColors.primaryColor,
           icon: const Icon(AppIcon.personOutlined),
           label: context.l10n.account,
         ),
@@ -114,9 +112,9 @@ class NavigationHelper {
         ),
       ];
 
-  GoRouter get _getState {
+  GoRouter get _getRouter {
     if (kIsWeb) {
-      return AppRouter.appRouter;
+      return AppRouter.router;
     } else {
       switch (navCubit.state.index) {
         case 0:
@@ -136,7 +134,7 @@ class NavigationHelper {
   }
 
   List<String> get pages {
-    var location = _getState.location;
+    var location = _getRouter.location;
     if (location == '/') {
       return kIsWeb ? ['home'] : [navCubit.state.index.getRouteName.name];
     } else if (location.startsWith('/')) {
@@ -149,21 +147,6 @@ class NavigationHelper {
 
   String get firstPage => pages.first;
 
-  Map<String, String> get arguments {
-    final argsMap = <String, String>{};
-    final location = _getState.location;
-    if (location.contains('?')) {
-      final argsList = location.split('?').last.split('&');
-      for (final element in argsList) {
-        if (element.contains('=')) {
-          final list = element.split('=');
-          argsMap[list.first] = list.last;
-        }
-      }
-    }
-    return argsMap;
-  }
-
   String get getTitle => lastPage.getRouteName.fullName;
 
   void pushNamed({
@@ -172,14 +155,14 @@ class NavigationHelper {
     Map<String, String> queryParams = const {},
   }) {
     if (kIsWeb || pushGlobally) {
-      AppRouter.appRouter.goNamed(routeName.name, queryParams: queryParams);
+      AppRouter.router.goNamed(routeName.name, queryParams: queryParams);
     } else {
-      if (_navPageRouters.length <= routeName.index) {
+      if (navPageRouters.length <= routeName.index) {
         /// only change navigation bar index.
         navCubit.goName(routeName);
       } else {
         /// navigating using the router of the current navigation bar index
-        _getState.goNamed(routeName.name, queryParams: queryParams);
+        _getRouter.goNamed(routeName.name, queryParams: queryParams);
       }
     }
   }
@@ -190,17 +173,17 @@ class NavigationHelper {
     Map<String, String> queryParams = const {},
   }) {
     if (kIsWeb || pushGlobally) {
-      AppRouter.appRouter.pushReplacementNamed(
+      AppRouter.router.pushReplacementNamed(
         routeName.name,
         queryParams: queryParams,
       );
     } else {
-      if (_navPageRouters.length <= routeName.index) {
+      if (navPageRouters.length <= routeName.index) {
         /// only change navigation bar index.
         navCubit.goName(routeName);
       } else {
         /// navigating using the router of the current navigation bar index
-        _getState.pushReplacementNamed(
+        _getRouter.pushReplacementNamed(
           routeName.name,
           queryParams: queryParams,
         );

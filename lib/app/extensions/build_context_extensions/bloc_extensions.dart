@@ -9,6 +9,4 @@ extension BlocExtension on BuildContext {
 
   AuthenticationRepository get authenticationRepository =>
       read<AuthenticationRepository>();
-
-  NavigationBarCubit get navigationBarCubit => read<NavigationBarCubit>();
 }

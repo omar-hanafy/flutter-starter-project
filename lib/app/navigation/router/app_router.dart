@@ -22,7 +22,7 @@ class AppRouter {
       GlobalKey<NavigatorState>(debugLabel: 'shell');
 
   static final GoRouter _appRouter = GoRouter(
-    observers: <NavigatorObserver>[AppNavObserver()],
+    observers: <NavigatorObserver>[AppRouterObserver()],
     initialLocation: RouteName.home.path,
     navigatorKey: _rootNavigatorKey,
     errorPageBuilder: (context, state) => _pageBuilder(context, state,
@@ -45,8 +45,11 @@ class AppRouter {
             path: RouteName.login.path,
             name: RouteName.login.name,
             routes: exploreSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const ExploreView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const ExploreView(),
+            ),
           ),
           GoRoute(
             path: RouteName.home.path,
@@ -65,36 +68,48 @@ class AppRouter {
             path: RouteName.explore.path,
             name: RouteName.explore.name,
             routes: exploreSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const ExploreView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const ExploreView(),
+            ),
           ),
           GoRoute(
             path: RouteName.cart.path,
             name: RouteName.cart.name,
             routes: carteSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const CartView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const CartView(),
+            ),
           ),
           GoRoute(
             path: RouteName.orders.path,
             name: RouteName.orders.name,
             routes: ordersSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const OrdersView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const OrdersView(),
+            ),
           ),
           GoRoute(
             path: RouteName.account.path,
             name: RouteName.account.name,
             routes: accountSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const AccountView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const AccountView(),
+            ),
           ),
         ],
       ),
     ],
   );
 
-  static GoRouter get appRouter => _appRouter;
+  static GoRouter get router => _appRouter;
 }
 
 class RouterPageBuilder extends StatelessWidget {

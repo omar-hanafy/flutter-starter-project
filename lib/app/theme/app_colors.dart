@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Defines the color palette for the App UI.
-abstract class AppColor {
+abstract class AppColors {
   static const Color black = Colors.black;
   static const Color white = Colors.white;
   static const Color black26 = Colors.black26;
@@ -27,22 +27,22 @@ class ResponsiveAppColor {
 
   final bool isDark;
 
-  Color blackWhite() => isDark ? Colors.white : Colors.black;
+  Color get blackWhite => isDark ? Colors.white : Colors.black;
 
-  Color whiteBlack() => isDark ? Colors.black : Colors.white;
+  Color get whiteBlack => isDark ? Colors.black : Colors.white;
 
-  Color grey() => isDark ? Colors.white12 : Colors.black12;
+  Color get grey => isDark ? Colors.white12 : Colors.black12;
 
-  Color lightGrey() =>
+  Color get lightGrey =>
       isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.1);
 
-  Color darkGrey() => isDark ? Colors.white54 : Colors.black54;
+  Color get darkGrey => isDark ? Colors.white54 : Colors.black54;
 
-  Color blackWhiteShadow() => isDark
-      ? AppColor.black.withOpacity(0.05)
-      : AppColor.grey.withOpacity(0.2);
+  Color get blackWhiteShadow => isDark
+      ? AppColors.black.withOpacity(0.05)
+      : AppColors.grey.withOpacity(0.2);
 
-  Color primaryColorShadow() => isDark
-      ? AppColor.primaryColor.withOpacity(0.05)
-      : AppColor.primaryColor.withOpacity(0.1);
+  Color get primaryColorShadow => isDark
+      ? AppColors.primaryColor.withOpacity(0.05)
+      : AppColors.primaryColor.withOpacity(0.1);
 }

@@ -40,8 +40,10 @@ class ThemeBloc extends HydratedBloc<ChangeBrightness, Brightness> {
 }
 
 class ChangeBrightness {
-  ChangeBrightness(this.context,
-      {this.changeType = BrightnessTypesEvent.toggle});
+  ChangeBrightness(
+    this.context, {
+    this.changeType = BrightnessTypesEvent.toggle,
+  });
 
   final BuildContext context;
   final BrightnessTypesEvent changeType;

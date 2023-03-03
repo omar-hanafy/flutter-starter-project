@@ -21,7 +21,7 @@ class NoAccount extends StatelessWidget {
         ElevatedButton(
             onPressed: () {
               context.authenticationRepository.logInWithEmailAndPassword(
-                  email: "devomarkhaled615@gmail.com", password: "kk888888");
+                  email: 'devomarkhaled615@gmail.com', password: 'kk888888');
             },
             child: const Text('Sign In With Apple')),
       ],

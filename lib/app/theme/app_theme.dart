@@ -10,27 +10,27 @@ class AppTheme {
 
   static ColorScheme _defaultColorScheme(Brightness br) => ColorScheme(
         brightness: br,
-        surface: AppColor.primaryColor,
-        onSurface: AppColor.onPrimaryColor,
-        error: AppColor.error,
-        onError: AppColor.onError,
-        background: AppColor.background,
-        onBackground: AppColor.onBackground,
-        primary: AppColor.primaryColor,
-        onPrimary: AppColor.onPrimaryColor,
-        secondary: AppColor.primaryColor,
-        onSecondary: AppColor.onPrimaryColor,
+        surface: AppColors.primaryColor,
+        onSurface: AppColors.onPrimaryColor,
+        error: AppColors.error,
+        onError: AppColors.onError,
+        background: AppColors.background,
+        onBackground: AppColors.onBackground,
+        primary: AppColors.primaryColor,
+        onPrimary: AppColors.onPrimaryColor,
+        secondary: AppColors.primaryColor,
+        onSecondary: AppColors.onPrimaryColor,
       );
 
   ThemeData get _defaultThemeData => ThemeData(
       fontFamily: languageCode == 'ar' ? 'Cairo' : 'SF-Pro-Rounded',
-      toggleableActiveColor: AppColor.primaryColor,
-      primaryColor: AppColor.primaryColor);
+      toggleableActiveColor: AppColors.primaryColor,
+      primaryColor: AppColors.primaryColor);
 
   Color getAdaptiveScaffoldBackgroundColor(Brightness br) =>
       br == Brightness.light
-          ? AppColor.scaffoldBackground
-          : AppColor.scaffoldBackgroundDark;
+          ? AppColors.scaffoldBackground
+          : AppColors.scaffoldBackgroundDark;
 
   ThemeData getAdaptiveTheme(Brightness br) => _defaultThemeData.copyWith(
       colorScheme: _defaultColorScheme(br),

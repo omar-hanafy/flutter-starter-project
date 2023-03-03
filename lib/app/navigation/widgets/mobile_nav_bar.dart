@@ -12,6 +12,7 @@ class MobileNavigationBar extends StatelessWidget {
     return BlocBuilder<NavigationBarCubit, NavigationBarState>(
       builder: (context, state) {
         return Scaffold(
+          // we can use IndexedStack
           body: PageView(
             physics: const NeverScrollableScrollPhysics(),
             controller: state.controller,
@@ -25,8 +26,8 @@ class MobileNavigationBar extends StatelessWidget {
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: state.index,
-            // selectedItemColor: AppColor.selectedItemsColor,
-            // unselectedItemColor: AppColor.unSelectedItemsColor,
+            // selectedItemColor: AppColors.selectedItemsColor,
+            // unselectedItemColor: AppColors.unSelectedItemsColor,
             onTap: (int index) {
               if (index == state.index) {
                 // do stuff when user tab the current index
@@ -34,8 +35,8 @@ class MobileNavigationBar extends StatelessWidget {
                 context.navigationBarCubit.goIndex(index);
               }
             },
-            selectedItemColor: AppColor.black,
-            unselectedItemColor: AppColor.darkGrey,
+            selectedItemColor: AppColors.black,
+            unselectedItemColor: AppColors.darkGrey,
             showUnselectedLabels: true,
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
             selectedFontSize: 16,

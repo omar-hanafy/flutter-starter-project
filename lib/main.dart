@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'lib.dart';
@@ -9,11 +10,18 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Project Title',
-      // onGenerateTitle: (BuildContext context) => ' Project Localized Title',
-      routerConfig: AppRouter.appRouter,
-      supportedLocales: AppLocalizations.supportedLocales,
-    );
+    return context.isIOS
+        ? CupertinoApp.router(
+            title: 'Project Title',
+            // onGenerateTitle: (BuildContext context) => ' Project Localized Title',
+            routerConfig: AppRouter.router,
+            supportedLocales: AppLocalizations.supportedLocales,
+          )
+        : MaterialApp.router(
+            title: 'Project Title',
+            // onGenerateTitle: (BuildContext context) => ' Project Localized Title',
+            routerConfig: AppRouter.router,
+            supportedLocales: AppLocalizations.supportedLocales,
+          );
   }
 }

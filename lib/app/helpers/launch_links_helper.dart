@@ -2,13 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 
-abstract class LaunchLinks {
+abstract class LaunchLinksHelper {
   static Future<void> launchEmail(String path,
       {String? from, String? subject, String? body}) async {
     String? encodeQueryParameters(Map<String, String> params) {
       return params.entries
           .map((MapEntry<String, String> e) =>
-              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
           .join('&');
     }
 
