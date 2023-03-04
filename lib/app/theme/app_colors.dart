@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../app.dart';
+
 /// Defines the color palette for the App UI.
 abstract class AppColors {
   static const Color black = Colors.black;
@@ -23,26 +25,30 @@ abstract class AppColors {
 }
 
 class ResponsiveAppColor {
-  ResponsiveAppColor({required this.isDark});
+  const ResponsiveAppColor(this.br);
 
-  final bool isDark;
+  final Brightness br;
 
-  Color get blackWhite => isDark ? Colors.white : Colors.black;
+  Color get blackWhite => br.isDark ? Colors.white : Colors.black;
 
-  Color get whiteBlack => isDark ? Colors.black : Colors.white;
+  Color get whiteBlack => br.isDark ? Colors.black : Colors.white;
 
-  Color get grey => isDark ? Colors.white12 : Colors.black12;
+  Color get grey => br.isDark ? Colors.white12 : Colors.black12;
 
   Color get lightGrey =>
-      isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.1);
+      br.isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.1);
 
-  Color get darkGrey => isDark ? Colors.white54 : Colors.black54;
+  Color get darkGrey => br.isDark ? Colors.white54 : Colors.black54;
 
-  Color get blackWhiteShadow => isDark
+  Color get blackWhiteShadow => br.isDark
       ? AppColors.black.withOpacity(0.05)
       : AppColors.grey.withOpacity(0.2);
 
-  Color get primaryColorShadow => isDark
+  Color get primaryColorShadow => br.isDark
       ? AppColors.primaryColor.withOpacity(0.05)
       : AppColors.primaryColor.withOpacity(0.1);
+
+  Color get scaffoldBackground => br.isDark
+      ? AppColors.scaffoldBackground
+      : AppColors.scaffoldBackgroundDark;
 }

@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import '../app.dart';
 
 /// Namespace for the App [ThemeData].
-class AppTheme {
-  AppTheme(this.languageCode);
-
-  final String languageCode;
-
+abstract class AppTheme {
   static ColorScheme _defaultColorScheme(Brightness br) => ColorScheme(
         brightness: br,
         surface: AppColors.primaryColor,
@@ -22,19 +18,38 @@ class AppTheme {
         onSecondary: AppColors.onPrimaryColor,
       );
 
-  ThemeData get _defaultThemeData => ThemeData(
-      fontFamily: languageCode == 'ar' ? 'Cairo' : 'SF-Pro-Rounded',
-      toggleableActiveColor: AppColors.primaryColor,
-      primaryColor: AppColors.primaryColor);
+  static ThemeData get _defaultThemeData => ThemeData(
+        fontFamily: 'SF-Pro-Rounded',
+        switchTheme: SwitchThemeData(
+          thumbColor: _getMaterialStatePropertyColor(),
+        ),
+        radioTheme: RadioThemeData(
+          fillColor: _getMaterialStatePropertyColor(),
+        ),
+        checkboxTheme: CheckboxThemeData(
+          fillColor: _getMaterialStatePropertyColor(),
+        ),
+        primaryColor: AppColors.primaryColor,
+      );
 
-  Color getAdaptiveScaffoldBackgroundColor(Brightness br) =>
-      br == Brightness.light
-          ? AppColors.scaffoldBackground
-          : AppColors.scaffoldBackgroundDark;
+  static ThemeData getAdaptiveTheme(Brightness br) =>
+      _defaultThemeData.copyWith(
+        colorScheme: _defaultColorScheme(br),
+        scaffoldBackgroundColor: ResponsiveAppColor(br).scaffoldBackground,
+      );
+}
 
-  ThemeData getAdaptiveTheme(Brightness br) => _defaultThemeData.copyWith(
-      colorScheme: _defaultColorScheme(br),
-      scaffoldBackgroundColor: getAdaptiveScaffoldBackgroundColor(br));
+MaterialStateProperty<Color?> _getMaterialStatePropertyColor(
+    {Color color = AppColors.primaryColor}) {
+  return MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return null;
+    }
+    if (states.contains(MaterialState.selected)) {
+      return color;
+    }
+    return null;
+  });
 }
 
 //   static TextTheme get _normalTextTheme {

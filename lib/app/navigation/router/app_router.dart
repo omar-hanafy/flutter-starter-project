@@ -123,14 +123,12 @@ class RouterPageBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('location name is ${state.name}');
     const locale = Locale('EN', 'EG');
-    final appTheme = AppTheme(locale.languageCode);
-
     return BlocBuilder<ThemeBloc, Brightness>(
       builder: (context, brightness) {
         return Theme(
-          data: appTheme.getAdaptiveTheme(brightness),
+          data: AppTheme.getAdaptiveTheme(brightness),
           child: Localizations(
-            locale: const Locale('en'),
+            locale: locale,
             delegates: AppLocalizations.localizationsDelegates,
             child: Builder(builder: (context) {
               return MediaQuery(
@@ -155,10 +153,11 @@ class RouterErrorPageBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, Brightness>(
       builder: (context, brightness) {
+        const locale = Locale('EN', 'EG');
         return Theme(
-          data: AppTheme('en').getAdaptiveTheme(brightness),
+          data: AppTheme.getAdaptiveTheme(brightness),
           child: Localizations(
-            locale: const Locale('en'),
+            locale: locale,
             delegates: AppLocalizations.localizationsDelegates,
             child: Builder(builder: (context) {
               return MediaQuery(
