@@ -11,7 +11,7 @@ class NavigationHelper {
 
   late final navCubit = context.navigationBarCubit;
 
-  // for non web
+  // routers for non web
   static final List<Widget> navPageRouters = [
     NavBarItemRouter(router: NavBarRouters.homeRouter),
     NavBarItemRouter(router: NavBarRouters.exploreRouter),
@@ -21,96 +21,105 @@ class NavigationHelper {
   ];
 
   // for mobile
-  List<BottomNavigationBarItem> get mobileNavItems => [
-        BottomNavigationBarItem(
-          backgroundColor: AppColors.primaryColor,
-          icon: const Icon(AppIcon.homeOutlined),
-          label: context.l10n.home,
-        ),
-        BottomNavigationBarItem(
-          backgroundColor: AppColors.primaryColor,
-          icon: const Icon(AppIcon.searchOutlined),
-          label: context.l10n.explore,
-        ),
-        BottomNavigationBarItem(
-          backgroundColor: AppColors.primaryColor,
-          icon: const Icon(AppIcon.shoppingCartOutlined),
-          label: context.l10n.cart,
-        ),
-        BottomNavigationBarItem(
-          backgroundColor: AppColors.primaryColor,
-          icon: const Icon(AppIcon.archiveOutlined),
-          label: context.l10n.orders,
-        ),
-        BottomNavigationBarItem(
-          backgroundColor: AppColors.primaryColor,
-          icon: const Icon(AppIcon.personOutlined),
-          label: context.l10n.account,
-        ),
-      ];
+  List<BottomNavigationBarItem> get mobileNavItems {
+    final l10n = context.l10n;
+    return [
+      BottomNavigationBarItem(
+        backgroundColor: AppColors.primaryColor,
+        icon: const Icon(AppIcon.homeOutlined),
+        label: l10n?.home ?? '',
+      ),
+      BottomNavigationBarItem(
+        backgroundColor: AppColors.primaryColor,
+        icon: const Icon(AppIcon.searchOutlined),
+        label: l10n?.explore ?? '',
+      ),
+      BottomNavigationBarItem(
+        backgroundColor: AppColors.primaryColor,
+        icon: const Icon(AppIcon.shoppingCartOutlined),
+        label: l10n?.cart ?? '',
+      ),
+      BottomNavigationBarItem(
+        backgroundColor: AppColors.primaryColor,
+        icon: const Icon(AppIcon.archiveOutlined),
+        label: l10n?.orders ?? '',
+      ),
+      BottomNavigationBarItem(
+        backgroundColor: AppColors.primaryColor,
+        icon: const Icon(AppIcon.personOutlined),
+        label: l10n?.account ?? '',
+      ),
+    ];
+  }
 
   // for desktop
-  List<NavigationRailDestination> get desktopNavItems => [
-        NavigationRailDestination(
-          icon: const Icon(AppIcon.homeOutlined),
-          label: Text(
-            context.l10n.home,
-          ),
+  List<NavigationRailDestination> get desktopNavItems {
+    final l10n = context.l10n;
+    return [
+      NavigationRailDestination(
+        icon: const Icon(AppIcon.homeOutlined),
+        label: Text(
+          l10n?.home ?? '',
         ),
-        NavigationRailDestination(
-          icon: const Icon(AppIcon.searchOutlined),
-          label: Text(
-            context.l10n.explore,
-          ),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(AppIcon.searchOutlined),
+        label: Text(
+          l10n?.explore ?? '',
         ),
-        NavigationRailDestination(
-          icon: const Icon(AppIcon.shoppingCartOutlined),
-          label: Text(
-            context.l10n.cart,
-          ),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(AppIcon.shoppingCartOutlined),
+        label: Text(
+          l10n?.cart ?? '',
         ),
-        NavigationRailDestination(
-          icon: const Icon(AppIcon.archiveOutlined),
-          label: Text(
-            context.l10n.orders,
-          ),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(AppIcon.archiveOutlined),
+        label: Text(
+          l10n?.orders ?? '',
         ),
-        NavigationRailDestination(
-          icon: const Icon(AppIcon.personOutlined),
-          label: Text(
-            context.l10n.account,
-          ),
+      ),
+      NavigationRailDestination(
+        icon: const Icon(AppIcon.personOutlined),
+        label: Text(
+          l10n?.account ?? '',
         ),
-      ];
+      ),
+    ];
+  }
 
   // for web (customized)
-  List<WebNavBarItem> get webNavItems => [
-        WebNavBarItem(
-          icon: const Icon(AppIcon.homeOutlined),
-          routeName: RouteName.home,
-          label: context.l10n.home,
-        ),
-        WebNavBarItem(
-          icon: const Icon(AppIcon.searchOutlined),
-          routeName: RouteName.explore,
-          label: context.l10n.explore,
-        ),
-        WebNavBarItem(
-          icon: const Icon(AppIcon.shoppingCartOutlined),
-          routeName: RouteName.cart,
-          label: context.l10n.cart,
-        ),
-        WebNavBarItem(
-          icon: const Icon(AppIcon.archiveOutlined),
-          routeName: RouteName.orders,
-          label: context.l10n.orders,
-        ),
-        WebNavBarItem(
-          icon: const Icon(AppIcon.personOutlined),
-          routeName: RouteName.account,
-          label: context.l10n.account,
-        ),
-      ];
+  List<WebNavBarItem> get webNavItems {
+    final l10n = context.l10n;
+    return [
+      WebNavBarItem(
+        icon: const Icon(AppIcon.homeOutlined),
+        routeName: RouteName.home,
+        label: l10n?.home ?? '',
+      ),
+      WebNavBarItem(
+        icon: const Icon(AppIcon.searchOutlined),
+        routeName: RouteName.explore,
+        label: l10n?.explore ?? '',
+      ),
+      WebNavBarItem(
+        icon: const Icon(AppIcon.shoppingCartOutlined),
+        routeName: RouteName.cart,
+        label: l10n?.cart ?? '',
+      ),
+      WebNavBarItem(
+        icon: const Icon(AppIcon.archiveOutlined),
+        routeName: RouteName.orders,
+        label: l10n?.orders ?? '',
+      ),
+      WebNavBarItem(
+        icon: const Icon(AppIcon.personOutlined),
+        routeName: RouteName.account,
+        label: l10n?.account ?? '',
+      ),
+    ];
+  }
 
   GoRouter get _getRouter {
     if (kIsWeb) {
