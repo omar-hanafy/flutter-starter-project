@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../app.dart';
+import '../../app.dart';
 
 /// Defines the color palette for the App UI.
 abstract class AppColors {
@@ -9,11 +9,14 @@ abstract class AppColors {
   static const Color black26 = Colors.black26;
   static const Color charcoal = Color(0xFF36454F);
   static const Color whiteBackground = Color(0xFFE8EAED);
-  static const Color scaffoldBackground = Color(0xFFFCFAF4);
+  static const Color scaffoldBackground = Color(0xFFF5F7FA);
   static const Color scaffoldBackgroundDark = Color(0xFF303030);
+  static const Color navBarBackground = Colors.white;
+  static const Color navBarBackgroundDark = Colors.grey;
   static const Color transparent = Colors.transparent;
   static const Color primaryColor = Color(0xfff2b43f);
-  static const Color onPrimaryColor = Colors.white;
+  static const Color onPrimaryColor = Colors.black;
+  static const Color onPrimaryColorDark = Colors.white;
   static const Color background = Colors.grey;
   static const Color onBackground = Colors.white;
   static const Color error = Colors.red;
@@ -29,9 +32,9 @@ class ResponsiveAppColor {
 
   final Brightness br;
 
-  Color get blackWhite => br.isDark ? Colors.white : Colors.black;
+  Color get black => br.isDark ? Colors.white : Colors.black;
 
-  Color get whiteBlack => br.isDark ? Colors.black : Colors.white;
+  Color get white => br.isDark ? Colors.black : Colors.white;
 
   Color get grey => br.isDark ? Colors.white12 : Colors.black12;
 
@@ -40,7 +43,7 @@ class ResponsiveAppColor {
 
   Color get darkGrey => br.isDark ? Colors.white54 : Colors.black54;
 
-  Color get blackWhiteShadow => br.isDark
+  Color get blackShadow => br.isDark
       ? AppColors.black.withOpacity(0.05)
       : AppColors.grey.withOpacity(0.2);
 

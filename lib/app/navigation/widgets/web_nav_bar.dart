@@ -19,7 +19,7 @@ class WebNavigationBar extends StatelessWidget {
     final navigationItems = context.navigationHelper.webNavItems;
 
     final Widget changeBrightnessIcon = IconButton(
-      onPressed: () => context.themeBloc.add(ChangeBrightness(context)),
+      onPressed: () => context.themeBloc.add(ChangeThemeMode(context)),
       icon: Icon(context.isDark ? AppIcon.darkMode : AppIcon.darkModeOutlined),
     );
 
@@ -28,7 +28,9 @@ class WebNavigationBar extends StatelessWidget {
             drawerEnableOpenDragGesture: false,
             appBar: AppBar(
               elevation: 0,
-              title: Text(NavigationHelper(context).getTitle),
+              title: Text(
+                NavigationHelper(context).navBarTitle,
+              ),
               actions: [changeBrightnessIcon],
             ),
             drawer: Drawer(

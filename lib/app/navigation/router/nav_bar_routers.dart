@@ -18,19 +18,19 @@ class NavBarItemRouter extends StatelessWidget {
   }
 }
 
-abstract class NavBarRouters {
+class NavBarRouters {
   static final GoRouter _homeRouter = GoRouter(
-    initialLocation: RouteName.home.path,
+    initialLocation: RouteName.home.routePath,
     // errorBuilder: (BuildContext context, GoRouterState state) =>
     //     ErrorPage(state: state),
     routes: [
       GoRoute(
         path: '/',
         redirect: (BuildContext context, GoRouterState state) =>
-            RouteName.home.path,
+            RouteName.home.routePath,
       ),
       GoRoute(
-        path: RouteName.home.path,
+        path: RouteName.home.routePath,
         routes: homeSubRoutes,
         pageBuilder: (context, state) {
           return const MaterialPage(
@@ -42,17 +42,17 @@ abstract class NavBarRouters {
   );
 
   static final GoRouter _exploreRouter = GoRouter(
-    initialLocation: RouteName.explore.path,
+    initialLocation: RouteName.explore.routePath,
     // errorBuilder: (BuildContext context, GoRouterState state) =>
     //     ErrorPage(state: state),
     routes: [
       GoRoute(
         path: '/',
         redirect: (BuildContext context, GoRouterState state) =>
-            RouteName.explore.path,
+            RouteName.explore.routePath,
       ),
       GoRoute(
-        path: RouteName.explore.path,
+        path: RouteName.explore.routePath,
         routes: exploreSubRoutes,
         pageBuilder: (context, state) {
           return const MaterialPage(
@@ -64,17 +64,17 @@ abstract class NavBarRouters {
   );
 
   static final GoRouter _cartRouter = GoRouter(
-    initialLocation: RouteName.cart.path,
+    initialLocation: RouteName.cart.routePath,
     // errorBuilder: (BuildContext context, GoRouterState state) =>
     //     ErrorPage(state: state),
     routes: [
       GoRoute(
         path: '/',
         redirect: (BuildContext context, GoRouterState state) =>
-            RouteName.cart.path,
+            RouteName.cart.routePath,
       ),
       GoRoute(
-        path: RouteName.cart.path,
+        path: RouteName.cart.routePath,
         routes: carteSubRoutes,
         pageBuilder: (context, state) {
           return const MaterialPage(
@@ -86,17 +86,17 @@ abstract class NavBarRouters {
   );
 
   static final GoRouter _ordersRouter = GoRouter(
-    initialLocation: RouteName.orders.path,
+    initialLocation: RouteName.orders.routePath,
     // errorBuilder: (BuildContext context, GoRouterState state) =>
     //     ErrorPage(state: state),
     routes: [
       GoRoute(
         path: '/',
         redirect: (BuildContext context, GoRouterState state) =>
-            RouteName.orders.path,
+            RouteName.orders.routePath,
       ),
       GoRoute(
-        path: RouteName.orders.path,
+        path: RouteName.orders.routePath,
         routes: ordersSubRoutes,
         pageBuilder: (context, state) {
           return const MaterialPage(
@@ -108,17 +108,17 @@ abstract class NavBarRouters {
   );
 
   static final GoRouter _accountRouter = GoRouter(
-    initialLocation: RouteName.account.path,
+    initialLocation: RouteName.account.routePath,
     // errorBuilder: (BuildContext context, GoRouterState state) =>
     //     ErrorPage(state: state),
     routes: [
       GoRoute(
         path: '/',
         redirect: (BuildContext context, GoRouterState state) =>
-            RouteName.account.path,
+            RouteName.account.routePath,
       ),
       GoRoute(
-        path: RouteName.account.path,
+        path: RouteName.account.routePath,
         routes: accountSubRoutes,
         pageBuilder: (context, state) {
           return const MaterialPage(

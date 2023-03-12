@@ -21,7 +21,7 @@ class MobileNavigationBar extends StatelessWidget {
           appBar: AppBar(
             elevation: 0,
             title: Text(
-              navigationHelper.getTitle,
+              navigationHelper.navBarTitle,
             ),
           ),
           bottomNavigationBar: BottomNavigationBar(

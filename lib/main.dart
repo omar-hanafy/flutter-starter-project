@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'lib.dart';
 
@@ -10,18 +11,28 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return context.isIOS
-        ? CupertinoApp.router(
-            title: 'Project Title',
-            // onGenerateTitle: (BuildContext context) => ' Project Localized Title',
-            routerConfig: AppRouter.router,
-            supportedLocales: AppLocalizations.supportedLocales,
-          )
-        : MaterialApp.router(
-            title: 'Project Title',
-            // onGenerateTitle: (BuildContext context) => ' Project Localized Title',
-            routerConfig: AppRouter.router,
-            supportedLocales: AppLocalizations.supportedLocales,
-          );
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (_, state) {
+        return context.isIOS
+            ? CupertinoApp.router(
+                theme: state.adaptiveCupertinoTheme,
+                onGenerateTitle: (BuildContext context) =>
+                    context.l10n?.appTitle ?? 'Project Title',
+                routerConfig: AppRouter.router,
+                locale: const Locale('en', 'EG'),
+                supportedLocales: AppLocalizations.supportedLocales,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+              )
+            : MaterialApp.router(
+                theme: state.adaptiveMaterialTheme,
+                onGenerateTitle: (BuildContext context) =>
+                    context.l10n?.appTitle ?? 'Project Title',
+                routerConfig: AppRouter.router,
+                locale: const Locale('en', 'EG'),
+                supportedLocales: AppLocalizations.supportedLocales,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+              );
+      },
+    );
   }
 }

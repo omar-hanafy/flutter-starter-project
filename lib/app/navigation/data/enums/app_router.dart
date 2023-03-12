@@ -4,11 +4,10 @@ enum RouteName {
   cart,
   orders,
   account,
-  login,
 }
 
 extension RouteNameExtension on RouteName {
-  String get fullName {
+  String get navBarTitle {
     switch (this) {
       case RouteName.home:
         return 'Home';
@@ -20,12 +19,27 @@ extension RouteNameExtension on RouteName {
         return 'Orders';
       case RouteName.account:
         return 'Account';
-      case RouteName.login:
-        return 'Login';
     }
   }
 
-  String get path => '/$name';
+  // String get routeName => name;
+
+  String get routeName {
+    switch (this) {
+      case RouteName.home:
+        return 'home';
+      case RouteName.explore:
+        return 'explore';
+      case RouteName.cart:
+        return 'cart';
+      case RouteName.orders:
+        return 'orders';
+      case RouteName.account:
+        return 'account';
+    }
+  }
+
+  String get routePath => '/$routeName';
 }
 
 extension RouteStringExtension on String {
@@ -41,8 +55,6 @@ extension RouteStringExtension on String {
         return RouteName.orders;
       case 'account':
         return RouteName.account;
-      case 'login':
-        return RouteName.login;
       default:
         return RouteName.home;
     }

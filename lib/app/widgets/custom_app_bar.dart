@@ -4,10 +4,8 @@ class CustomAppBar extends PreferredSize {
   CustomAppBar({
     super.key,
     required this.args,
-  }) : super(
-          child: CustomAppBarWidget(args: args),
-          preferredSize: args.preferredSize,
-        );
+    required super.preferredSize,
+  }) : super(child: CustomAppBarWidget(args: args));
 
   final AppBarArgs args;
 }
@@ -26,9 +24,5 @@ class CustomAppBarWidget extends StatelessWidget {
 }
 
 class AppBarArgs {
-  const AppBarArgs({
-    required this.preferredSize,
-  });
-
-  final Size preferredSize;
+  const AppBarArgs();
 }

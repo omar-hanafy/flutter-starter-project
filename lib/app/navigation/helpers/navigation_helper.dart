@@ -11,7 +11,7 @@ class NavigationHelper {
 
   late final navCubit = context.navigationBarCubit;
 
-  // routers for non web
+  // for non web
   static final List<Widget> navPageRouters = [
     NavBarItemRouter(router: NavBarRouters.homeRouter),
     NavBarItemRouter(router: NavBarRouters.exploreRouter),
@@ -156,7 +156,7 @@ class NavigationHelper {
 
   String get firstPage => pages.first;
 
-  String get getTitle => lastPage.getRouteName.fullName;
+  String get navBarTitle => lastPage.getRouteName.navBarTitle;
 
   void pushNamed({
     bool pushGlobally = false,
