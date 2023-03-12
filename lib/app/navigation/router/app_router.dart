@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../lib.dart';
@@ -22,8 +21,8 @@ class AppRouter {
       GlobalKey<NavigatorState>(debugLabel: 'shell');
 
   static final GoRouter _appRouter = GoRouter(
-    observers: <NavigatorObserver>[AppNavObserver()],
-    initialLocation: RouteName.home.path,
+    observers: <NavigatorObserver>[AppRouterObserver()],
+    initialLocation: RouteName.home.routePath,
     navigatorKey: _rootNavigatorKey,
     errorPageBuilder: (context, state) => _pageBuilder(context, state,
         child: RouterErrorPageBuilder(routerState: state)),
@@ -33,24 +32,19 @@ class AppRouter {
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) =>
-            RouterPageBuilder(state: state, child: child),
+        builder: (context, state, child) => RouterPageBuilder(
+          state: state,
+          child: child,
+        ),
         routes: <RouteBase>[
           // above is the GoRoute for the nav bar items only.
           GoRoute(
             path: '/',
-            redirect: (context, state) => RouteName.home.path,
+            redirect: (context, state) => RouteName.home.routePath,
           ),
           GoRoute(
-            path: RouteName.login.path,
-            name: RouteName.login.name,
-            routes: exploreSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const ExploreView()),
-          ),
-          GoRoute(
-            path: RouteName.home.path,
-            name: RouteName.home.name,
+            path: RouteName.home.routePath,
+            name: RouteName.home.routeName,
             routes: homeSubRoutes,
             pageBuilder: (context, state) {
               return _pageBuilder(context, state,
@@ -62,71 +56,70 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: RouteName.explore.path,
-            name: RouteName.explore.name,
+            path: RouteName.explore.routePath,
+            name: RouteName.explore.routeName,
             routes: exploreSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const ExploreView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const ExploreView(),
+            ),
           ),
           GoRoute(
-            path: RouteName.cart.path,
-            name: RouteName.cart.name,
+            path: RouteName.cart.routePath,
+            name: RouteName.cart.routeName,
             routes: carteSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const CartView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const CartView(),
+            ),
           ),
           GoRoute(
-            path: RouteName.orders.path,
-            name: RouteName.orders.name,
+            path: RouteName.orders.routePath,
+            name: RouteName.orders.routeName,
             routes: ordersSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const OrdersView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const OrdersView(),
+            ),
           ),
           GoRoute(
-            path: RouteName.account.path,
-            name: RouteName.account.name,
+            path: RouteName.account.routePath,
+            name: RouteName.account.routeName,
             routes: accountSubRoutes,
-            pageBuilder: (context, state) =>
-                _pageBuilder(context, state, child: const AccountView()),
+            pageBuilder: (context, state) => _pageBuilder(
+              context,
+              state,
+              child: const AccountView(),
+            ),
           ),
         ],
       ),
     ],
   );
 
-  static GoRouter get appRouter => _appRouter;
+  static GoRouter get router => _appRouter;
 }
 
 class RouterPageBuilder extends StatelessWidget {
-  const RouterPageBuilder(
-      {super.key, required this.child, required this.state});
+  const RouterPageBuilder({
+    super.key,
+    required this.child,
+    required this.state,
+  });
 
   final Widget child;
   final GoRouterState state;
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('location name is ${state.name}');
-    const locale = Locale('EN', 'EG');
-    final appTheme = AppTheme(locale.languageCode);
-
-    return BlocBuilder<ThemeBloc, Brightness>(
-      builder: (context, brightness) {
-        return Theme(
-          data: appTheme.getAdaptiveTheme(brightness),
-          child: Localizations(
-            locale: const Locale('en'),
-            delegates: AppLocalizations.localizationsDelegates,
-            child: Builder(builder: (context) {
-              return MediaQuery(
-                data: context.mq
-                    .copyWith(textScaleFactor: context.textScaleFactor),
-                child: kIsWeb ? WebNavigationBar(child: child) : child,
-              );
-            }),
-          ),
-        );
-      },
+    return MediaQuery(
+      data: context.mq.copyWith(
+        textScaleFactor: context.textScaleFactor,
+      ),
+      child: kIsWeb ? WebNavigationBar(child: child) : child,
     );
   }
 }
@@ -138,24 +131,15 @@ class RouterErrorPageBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, Brightness>(
-      builder: (context, brightness) {
-        return Theme(
-          data: AppTheme('en').getAdaptiveTheme(brightness),
-          child: Localizations(
-            locale: const Locale('en'),
-            delegates: AppLocalizations.localizationsDelegates,
-            child: Builder(builder: (context) {
-              return MediaQuery(
-                data: context.mq
-                    .copyWith(textScaleFactor: context.textScaleFactor),
-                child: WebNavigationBar(
-                    child: Center(child: Text('${routerState.error}'))),
-              );
-            }),
-          ),
-        );
-      },
+    return MediaQuery(
+      data: context.mq.copyWith(
+        textScaleFactor: context.textScaleFactor,
+      ),
+      child: WebNavigationBar(
+        child: Center(
+          child: Text('${routerState.error}'),
+        ),
+      ),
     );
   }
 }

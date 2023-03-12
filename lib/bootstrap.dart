@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,14 +16,15 @@ import 'lib.dart';
 ///    returning a Future or a Widget and it will
 ///    execute asynchronously (builder may or may not execute asynchronously).
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
-  FlutterError.onError = (details) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
+  FlutterError.onError = (FlutterErrorDetails details) {
+    log('ERRORRRR ${details.exceptionAsString()}, Library: ${details.library}, context: ${details.context}, exception: ${details.exception},  silent: ${details.silent},  informationCollector: ${details.informationCollector}, stackFilter: ${details.stackFilter}',
+        stackTrace: details.stack);
   };
 
   WidgetsFlutterBinding.ensureInitialized();
 
   // modify and manage app window on desktop platforms
-  if (!kIsWeb && defaultTargetPlatform.isDesktop) {
+  if (defaultTargetPlatform.isDesktop) {
     await windowManager.ensureInitialized();
     const windowOptions = WindowOptions();
 
@@ -57,17 +58,13 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     () async => runApp(
       MultiBlocProvider(
         providers: [
-          // BlocProvider<NavigationIndexCubit>(
-          //     create: (context) => NavigationIndexCubit()),
-          // BlocProvider<NavigationControllerCubit>(
-          //     create: (context) => NavigationControllerCubit()),
-          BlocProvider(create: (_) => ThemeBloc()),
           BlocProvider(
-              create: (_) => InternetConnectionBloc()..add(CheckConnection())),
+            create: (_) => ThemeBloc(),
+          ),
+          BlocProvider(
+            create: (_) => InternetConnectionBloc()..add(CheckConnection()),
+          ),
           if (!kIsWeb) BlocProvider(create: (_) => NavigationBarCubit()),
-          // BlocProvider(
-          //     create: (_) => AppBloc(authenticationRepository: authRepository)),
-          //todo: merge navigation blocs
         ],
         child: await builder(),
       ),
@@ -80,4 +77,25 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     ///    if any, and to handle errors thrown synchronously by the call to body.
     (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
+}
+
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onTransition(
+    Bloc<dynamic, dynamic> bloc,
+    Transition<dynamic, dynamic> transition,
+  ) {
+    super.onTransition(bloc, transition);
+    log(transition.toString());
+  }
+
+  @override
+  void onError(
+    BlocBase<dynamic> bloc,
+    Object error,
+    StackTrace stackTrace,
+  ) {
+    log(error.toString());
+    super.onError(bloc, error, stackTrace);
+  }
 }
