@@ -11,7 +11,7 @@ class AppLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushNamed(name: RouteName.home);
+        context.pushTo(RouteName.home);
         if (closeDrawer) context.pop();
       },
       child: Text(

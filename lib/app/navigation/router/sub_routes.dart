@@ -1,26 +1,24 @@
-import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart';
 
-// myAppRoute({String uniqueId = "",bool isSub = true}) => GoRoute(
-//       path: isSub ? RoutePaths.myApp : "/${RoutePaths.myApp}",
-//       name: "$uniqueId${RoutePaths.myApp}",
-//       pageBuilder: (context, state) {
-//         try {
-//           return NoTransitionPage<void>(
-//             key: state.pageKey,
-//             child: MyAppView(),
-//           );
-//         } catch (e) {
-//           return NoTransitionPage<void>(
-//             key: state.pageKey,
-//             child: MyAppError(error: e.toString()),
-//           );
-//         }
-//       },
-//     );
+import '../../app.dart';
+
+GoRoute myAppRoute({
+  required RouteName routeName,
+  required Widget child,
+}) =>
+    GoRoute(
+      path: routeName.routeName,
+      name: routeName.routeName,
+      routes: exploreSubRoutes,
+      pageBuilder: (context, state) => AppRouter.pageBuilder(
+        context,
+        state,
+        child: child,
+      ),
+    );
 
 final List<RouteBase> homeSubRoutes = [
-  // myAppRoute(uniqueId: "home/"),
-  // contactRoute(uniqueId: "home/")
+  // myAppRoute(routeName: RouteName.homeTwo),
 ];
 
 final List<RouteBase> exploreSubRoutes = [

@@ -158,27 +158,40 @@ class NavigationHelper {
 
   String get navBarTitle => lastPage.getRouteName.navBarTitle;
 
-  void pushNamed({
+  Future<T?> pushNamed<T extends Object?>(
+    RouteName routeName, {
     bool pushGlobally = false,
-    required RouteName routeName,
-    Map<String, String> queryParams = const {},
-  }) {
+    Map<String, String> params = const <String, String>{},
+    Map<String, dynamic> queryParams = const <String, dynamic>{},
+    Object? extra,
+  }) async {
     if (kIsWeb || pushGlobally) {
-      AppRouter.router.goNamed(routeName.name, queryParams: queryParams);
+      return AppRouter.router.pushNamed<T>(
+        routeName.name,
+        params: params,
+        queryParams: queryParams,
+        extra: extra,
+      );
     } else {
-      if (navPageRouters.length <= routeName.index) {
+      if (navPageRouters.length < routeName.index) {
         /// only change navigation bar index.
         navCubit.goName(routeName);
       } else {
         /// navigating using the router of the current navigation bar index
-        _getRouter.goNamed(routeName.name, queryParams: queryParams);
+        return _getRouter.pushNamed(
+          routeName.name,
+          params: params,
+          queryParams: queryParams,
+          extra: extra,
+        );
       }
     }
+    return null;
   }
 
-  void pushReplacement({
+  void pushReplacement(
+    RouteName routeName, {
     bool pushGlobally = false,
-    required RouteName routeName,
     Map<String, String> queryParams = const {},
   }) {
     if (kIsWeb || pushGlobally) {

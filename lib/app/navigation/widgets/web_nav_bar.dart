@@ -130,13 +130,13 @@ class WebNavBarItem extends StatelessWidget {
             ),
             onTap: () {
               context
-                ..pushNamed(name: routeName)
+                ..pushTo(routeName)
                 ..pop();
             },
           )
         : GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => context.pushNamed(name: routeName),
+            onTap: () => context.pushTo(routeName),
             child: FocusableActionDetector(
               mouseCursor: SystemMouseCursors.click,
               child: SizedBox(

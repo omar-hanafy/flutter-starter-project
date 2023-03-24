@@ -4,15 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app.dart';
 
 extension NavigationExtension on BuildContext {
-  void pushNamed({
+  Future<T?> pushTo<T extends Object?>(
+    RouteName routeName, {
     bool pushGlobally = false,
-    required RouteName name,
-    Map<String, String> queryParams = const {},
+    Map<String, String> params = const <String, String>{},
+    Map<String, dynamic> queryParams = const <String, dynamic>{},
+    Object? extra,
   }) =>
       NavigationHelper(this).pushNamed(
-        routeName: name,
+        routeName,
         pushGlobally: pushGlobally,
+        params: params,
         queryParams: queryParams,
+        extra: extra,
       );
 
   NavigationHelper get navigationHelper => NavigationHelper(this);

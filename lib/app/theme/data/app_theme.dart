@@ -51,24 +51,25 @@ abstract class AppTheme {
   static ColorScheme get _defaultColorScheme => const ColorScheme.light(
         surface: AppColors.primaryColor,
         onSurface: AppColors.onPrimaryColor,
-        error: AppColors.error,
-        onError: AppColors.onError,
-        background: AppColors.background,
         primary: AppColors.primaryColor,
         onPrimary: AppColors.onPrimaryColor,
         secondary: AppColors.primaryColor,
         onSecondary: AppColors.onPrimaryColor,
+        error: AppColors.error,
+        onError: AppColors.onError,
+        background: AppColors.background,
       );
 
   static ColorScheme get _darkColorScheme => const ColorScheme.dark(
         surface: AppColors.primaryColor,
-        error: AppColors.error,
-        onError: AppColors.onError,
-        background: AppColors.background,
+        onSurface: AppColors.onPrimaryColorDark,
         primary: AppColors.primaryColor,
         onPrimary: AppColors.onPrimaryColorDark,
         secondary: AppColors.primaryColor,
         onSecondary: AppColors.onPrimaryColorDark,
+        error: AppColors.error,
+        onError: AppColors.onError,
+        background: AppColors.background,
       );
 
   static MaterialStateProperty<Color?> get _getMaterialStatePropertyColor =>

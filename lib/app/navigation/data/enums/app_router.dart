@@ -47,6 +47,8 @@ extension RouteStringExtension on String {
     switch (toLowerCase()) {
       case 'home':
         return RouteName.home;
+      case 'homeTwo':
+        return RouteName.home;
       case 'explore':
         return RouteName.explore;
       case 'cart':

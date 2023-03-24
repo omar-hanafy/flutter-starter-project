@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../lib.dart';
 
 class AppRouter {
-  static Page<dynamic> _pageBuilder(BuildContext context, GoRouterState state,
+  static Page<dynamic> pageBuilder(BuildContext context, GoRouterState state,
       {required Widget child}) {
     return kIsWeb
         ? NoTransitionPage<void>(
@@ -24,7 +24,7 @@ class AppRouter {
     observers: <NavigatorObserver>[AppRouterObserver()],
     initialLocation: RouteName.home.routePath,
     navigatorKey: _rootNavigatorKey,
-    errorPageBuilder: (context, state) => _pageBuilder(context, state,
+    errorPageBuilder: (context, state) => pageBuilder(context, state,
         child: RouterErrorPageBuilder(routerState: state)),
     errorBuilder: (context, state) =>
         RouterErrorPageBuilder(routerState: state),
@@ -47,7 +47,7 @@ class AppRouter {
             name: RouteName.home.routeName,
             routes: homeSubRoutes,
             pageBuilder: (context, state) {
-              return _pageBuilder(context, state,
+              return pageBuilder(context, state,
                   child: kIsWeb
                       ? const HomeView()
                       : context.isDesktop
@@ -59,7 +59,7 @@ class AppRouter {
             path: RouteName.explore.routePath,
             name: RouteName.explore.routeName,
             routes: exploreSubRoutes,
-            pageBuilder: (context, state) => _pageBuilder(
+            pageBuilder: (context, state) => pageBuilder(
               context,
               state,
               child: const ExploreView(),
@@ -69,7 +69,7 @@ class AppRouter {
             path: RouteName.cart.routePath,
             name: RouteName.cart.routeName,
             routes: carteSubRoutes,
-            pageBuilder: (context, state) => _pageBuilder(
+            pageBuilder: (context, state) => pageBuilder(
               context,
               state,
               child: const CartView(),
@@ -79,7 +79,7 @@ class AppRouter {
             path: RouteName.orders.routePath,
             name: RouteName.orders.routeName,
             routes: ordersSubRoutes,
-            pageBuilder: (context, state) => _pageBuilder(
+            pageBuilder: (context, state) => pageBuilder(
               context,
               state,
               child: const OrdersView(),
@@ -89,7 +89,7 @@ class AppRouter {
             path: RouteName.account.routePath,
             name: RouteName.account.routeName,
             routes: accountSubRoutes,
-            pageBuilder: (context, state) => _pageBuilder(
+            pageBuilder: (context, state) => pageBuilder(
               context,
               state,
               child: const AccountView(),
