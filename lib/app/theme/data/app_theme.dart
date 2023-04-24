@@ -11,24 +11,38 @@ abstract class AppTheme {
       MaterialStateProperty.all(AppColors.primaryColor);
 
   static ThemeData get defaultTheme => ThemeData(
-      // fontFamily: '',
-      primaryColor: AppColors.primaryColor,
-      useMaterial3: true,
-      switchTheme: SwitchThemeData(
-        thumbColor: _materialStatePropertyPrimaryColor,
-      ),
-      radioTheme: RadioThemeData(
-        fillColor: _materialStatePropertyPrimaryColor,
-      ),
-      checkboxTheme: CheckboxThemeData(
-        fillColor: _materialStatePropertyPrimaryColor,
-      ),
-      colorScheme: _defaultColorScheme,
-      brightness: Brightness.light,
-      scaffoldBackgroundColor: AppColors.scaffoldBackground,
-      splashColor: AppColors.primaryColor,
-      cardTheme: const CardTheme(surfaceTintColor: Colors.transparent),
-      appBarTheme: const AppBarTheme(surfaceTintColor: Colors.transparent));
+        // fontFamily: '',
+        primaryColor: AppColors.primaryColor,
+        useMaterial3: true,
+        switchTheme: SwitchThemeData(
+          thumbColor: _materialStatePropertyPrimaryColor,
+        ),
+        radioTheme: RadioThemeData(
+          fillColor: _materialStatePropertyPrimaryColor,
+        ),
+        checkboxTheme: CheckboxThemeData(
+          fillColor: _materialStatePropertyPrimaryColor,
+        ),
+        colorScheme: _defaultColorScheme,
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: AppColors.scaffoldBackground,
+        splashColor: AppColors.primaryColor,
+        cardTheme: const CardTheme(surfaceTintColor: Colors.transparent),
+        appBarTheme: const AppBarTheme(surfaceTintColor: Colors.transparent),
+        navigationBarTheme: const NavigationBarThemeData(),
+        navigationDrawerTheme: const NavigationDrawerThemeData(),
+        navigationRailTheme: const NavigationRailThemeData(
+          selectedLabelTextStyle: TextStyle(
+            color: AppColors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+          unselectedLabelTextStyle:
+              TextStyle(color: AppColors.darkGrey, fontSize: 10),
+          unselectedIconTheme: IconThemeData(color: AppColors.darkGrey),
+          selectedIconTheme: IconThemeData(color: AppColors.black),
+        ),
+      );
 
   static ThemeData get darkTheme => ThemeData(
         // fontFamily: '',
@@ -49,10 +63,23 @@ abstract class AppTheme {
         splashColor: AppColors.primaryColor,
         cardTheme: const CardTheme(surfaceTintColor: Colors.transparent),
         appBarTheme: const AppBarTheme(surfaceTintColor: Colors.transparent),
+        navigationBarTheme: const NavigationBarThemeData(),
+        navigationDrawerTheme: const NavigationDrawerThemeData(),
+        navigationRailTheme: const NavigationRailThemeData(
+          selectedLabelTextStyle: TextStyle(
+            color: AppColors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+          unselectedLabelTextStyle:
+              TextStyle(color: AppColors.grey, fontSize: 10),
+          unselectedIconTheme: IconThemeData(color: AppColors.grey),
+          selectedIconTheme: IconThemeData(color: AppColors.white),
+        ),
       );
 
   static ColorScheme get _defaultColorScheme => const ColorScheme.light(
-        surface: AppColors.scaffoldBackground,
+        surface: AppColors.surface,
         onSurface: AppColors.black,
         primary: AppColors.primaryColor,
         onPrimary: AppColors.onPrimaryColor,
@@ -64,7 +91,7 @@ abstract class AppTheme {
       );
 
   static ColorScheme get _darkColorScheme => const ColorScheme.dark(
-        surface: AppColors.scaffoldBackgroundDark,
+        surface: AppColors.surfaceDark,
         onSurface: Colors.white,
         primary: AppColors.primaryColor,
         onPrimary: AppColors.onPrimaryColorDark,
