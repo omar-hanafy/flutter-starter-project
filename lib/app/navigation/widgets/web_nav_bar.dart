@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../app.dart';
+import 'package:pinprick/app/app.dart';
 
 class WebNavigationBar extends StatelessWidget {
   const WebNavigationBar({super.key, required this.child});
@@ -142,8 +141,13 @@ class WebNavBarItem extends StatelessWidget {
               child: SizedBox(
                 child: Padding(
                   padding: const EdgeInsets.all(8),
-                  child: Text(label,
-                      style: _getTextStyle(context, routeName: routeName)),
+                  child: Text(
+                    label,
+                    style: _getTextStyle(
+                      context,
+                      routeName: routeName,
+                    ),
+                  ),
                 ),
               ),
             ),

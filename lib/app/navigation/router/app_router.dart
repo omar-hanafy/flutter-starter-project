@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../lib.dart';
 
@@ -45,7 +44,7 @@ class AppRouter {
           GoRoute(
             path: RouteName.home.routePath,
             name: RouteName.home.routeName,
-            routes: homeSubRoutes,
+            routes: SubRoutes.home,
             pageBuilder: (context, state) {
               return pageBuilder(context, state,
                   child: kIsWeb
@@ -58,7 +57,7 @@ class AppRouter {
           GoRoute(
             path: RouteName.explore.routePath,
             name: RouteName.explore.routeName,
-            routes: exploreSubRoutes,
+            routes: SubRoutes.explore,
             pageBuilder: (context, state) => pageBuilder(
               context,
               state,
@@ -68,7 +67,7 @@ class AppRouter {
           GoRoute(
             path: RouteName.cart.routePath,
             name: RouteName.cart.routeName,
-            routes: carteSubRoutes,
+            routes: SubRoutes.carte,
             pageBuilder: (context, state) => pageBuilder(
               context,
               state,
@@ -78,7 +77,7 @@ class AppRouter {
           GoRoute(
             path: RouteName.orders.routePath,
             name: RouteName.orders.routeName,
-            routes: ordersSubRoutes,
+            routes: SubRoutes.orders,
             pageBuilder: (context, state) => pageBuilder(
               context,
               state,
@@ -88,7 +87,7 @@ class AppRouter {
           GoRoute(
             path: RouteName.account.routePath,
             name: RouteName.account.routeName,
-            routes: accountSubRoutes,
+            routes: SubRoutes.account,
             pageBuilder: (context, state) => pageBuilder(
               context,
               state,

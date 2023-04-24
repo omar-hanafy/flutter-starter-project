@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../lib.dart';
 
@@ -31,7 +30,7 @@ class NavBarRouters {
       ),
       GoRoute(
         path: RouteName.home.routePath,
-        routes: homeSubRoutes,
+        routes: SubRoutes.home,
         pageBuilder: (context, state) {
           return const MaterialPage(
             child: HomeView(),
@@ -53,7 +52,7 @@ class NavBarRouters {
       ),
       GoRoute(
         path: RouteName.explore.routePath,
-        routes: exploreSubRoutes,
+        routes: SubRoutes.explore,
         pageBuilder: (context, state) {
           return const MaterialPage(
             child: ExploreView(),
@@ -75,7 +74,7 @@ class NavBarRouters {
       ),
       GoRoute(
         path: RouteName.cart.routePath,
-        routes: carteSubRoutes,
+        routes: SubRoutes.carte,
         pageBuilder: (context, state) {
           return const MaterialPage(
             child: CartView(),
@@ -97,7 +96,7 @@ class NavBarRouters {
       ),
       GoRoute(
         path: RouteName.orders.routePath,
-        routes: ordersSubRoutes,
+        routes: SubRoutes.orders,
         pageBuilder: (context, state) {
           return const MaterialPage(
             child: OrdersView(),
@@ -119,7 +118,7 @@ class NavBarRouters {
       ),
       GoRoute(
         path: RouteName.account.routePath,
-        routes: accountSubRoutes,
+        routes: SubRoutes.account,
         pageBuilder: (context, state) {
           return const MaterialPage(
             child: AccountView(),
