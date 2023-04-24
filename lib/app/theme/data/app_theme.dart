@@ -11,23 +11,24 @@ abstract class AppTheme {
       MaterialStateProperty.all(AppColors.primaryColor);
 
   static ThemeData get defaultTheme => ThemeData(
-        // fontFamily: '',
-        primaryColor: AppColors.primaryColor,
-        useMaterial3: true,
-        switchTheme: SwitchThemeData(
-          thumbColor: _materialStatePropertyPrimaryColor,
-        ),
-        radioTheme: RadioThemeData(
-          fillColor: _materialStatePropertyPrimaryColor,
-        ),
-        checkboxTheme: CheckboxThemeData(
-          fillColor: _materialStatePropertyPrimaryColor,
-        ),
-        colorScheme: _defaultColorScheme,
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: AppColors.scaffoldBackground,
-        splashColor: AppColors.primaryColor,
-      );
+      // fontFamily: '',
+      primaryColor: AppColors.primaryColor,
+      useMaterial3: true,
+      switchTheme: SwitchThemeData(
+        thumbColor: _materialStatePropertyPrimaryColor,
+      ),
+      radioTheme: RadioThemeData(
+        fillColor: _materialStatePropertyPrimaryColor,
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: _materialStatePropertyPrimaryColor,
+      ),
+      colorScheme: _defaultColorScheme,
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: AppColors.scaffoldBackground,
+      splashColor: AppColors.primaryColor,
+      cardTheme: const CardTheme(surfaceTintColor: Colors.transparent),
+      appBarTheme: const AppBarTheme(surfaceTintColor: Colors.transparent));
 
   static ThemeData get darkTheme => ThemeData(
         // fontFamily: '',
@@ -46,11 +47,13 @@ abstract class AppTheme {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: AppColors.scaffoldBackgroundDark,
         splashColor: AppColors.primaryColor,
+        cardTheme: const CardTheme(surfaceTintColor: Colors.transparent),
+        appBarTheme: const AppBarTheme(surfaceTintColor: Colors.transparent),
       );
 
   static ColorScheme get _defaultColorScheme => const ColorScheme.light(
-        surface: AppColors.primaryColor,
-        onSurface: AppColors.onPrimaryColor,
+        surface: AppColors.scaffoldBackground,
+        onSurface: AppColors.black,
         primary: AppColors.primaryColor,
         onPrimary: AppColors.onPrimaryColor,
         secondary: AppColors.primaryColor,
@@ -61,8 +64,8 @@ abstract class AppTheme {
       );
 
   static ColorScheme get _darkColorScheme => const ColorScheme.dark(
-        surface: AppColors.primaryColor,
-        onSurface: AppColors.onPrimaryColorDark,
+        surface: AppColors.scaffoldBackgroundDark,
+        onSurface: Colors.white,
         primary: AppColors.primaryColor,
         onPrimary: AppColors.onPrimaryColorDark,
         secondary: AppColors.primaryColor,
