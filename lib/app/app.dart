@@ -1,4 +1,4 @@
-export 'package:flutter_helper/flutter_helper.dart';
+export 'package:flutter_helper_utils/flutter_helper_utils.dart';
 
 export 'blocs/blocs.dart';
 export 'enums/enums.dart';
