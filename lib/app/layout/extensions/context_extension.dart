@@ -4,27 +4,18 @@ import '../../app.dart';
 
 extension LayoutExtension on BuildContext {
   ScreenType get screenType {
-    // Use .widthPx to detect device type regardless of orientation
     final dw = widthPx;
-    if (dw < AppBreakpoint.xsMobile) {
-      return ScreenType.xsMobile;
-    }
+    if (dw < AppBreakpoint.xsMobile) return ScreenType.xsMobile;
     if (dw < AppBreakpoint.sMobile) return ScreenType.sMobile;
     if (dw < AppBreakpoint.mobile) return ScreenType.mobile;
     if (dw < AppBreakpoint.lMobile) return ScreenType.lMobile;
     if (dw < AppBreakpoint.sTablet) return ScreenType.sTablet;
     if (dw < AppBreakpoint.tablet) return ScreenType.tablet;
     if (dw < AppBreakpoint.lTablet) return ScreenType.lTablet;
-    if (dw < AppBreakpoint.xlTablet) {
-      return ScreenType.xlTablet;
-    }
-    if (dw < AppBreakpoint.sDesktop) {
-      return ScreenType.sDesktop;
-    }
+    if (dw < AppBreakpoint.xlTablet) return ScreenType.xlTablet;
+    if (dw < AppBreakpoint.sDesktop) return ScreenType.sDesktop;
     if (dw < AppBreakpoint.desktop) return ScreenType.desktop;
-    if (dw < AppBreakpoint.lDesktop) {
-      return ScreenType.lDesktop;
-    }
+    if (dw < AppBreakpoint.lDesktop) return ScreenType.lDesktop;
     return ScreenType.tv;
   }
 
