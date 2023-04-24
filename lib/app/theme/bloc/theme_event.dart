@@ -11,4 +11,9 @@ class ChangeThemeMode extends ThemeEvent {
 
   final BuildContext context;
   final BrightnessChangeType changeType;
+
+  @override
+  String toString() {
+    return 'ChangeThemeMode{changeType: $changeType}';
+  }
 }

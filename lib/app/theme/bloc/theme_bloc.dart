@@ -8,7 +8,7 @@ part 'theme_event.dart';
 part 'theme_state.dart';
 
 class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
-  ThemeBloc() : super(ThemeState()) {
+  ThemeBloc() : super(const ThemeState()) {
     on<ChangeThemeMode>(_onChangeThemeMode);
   }
 
@@ -25,7 +25,7 @@ class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
         emit(ThemeState.getSystem(sysBr));
         break;
       case BrightnessChangeType.toggle:
-        emit(ThemeState.getToggled());
+        emit(ThemeState.getToggled(state._brightness));
         break;
     }
   }

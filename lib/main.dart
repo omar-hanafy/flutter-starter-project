@@ -13,6 +13,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (_, state) {
+        debugPrint('$state');
         return context.isIOS
             ? CupertinoApp.router(
                 theme: state.adaptiveCupertinoTheme,
@@ -24,7 +25,9 @@ class App extends StatelessWidget {
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
               )
             : MaterialApp.router(
-                theme: state.adaptiveMaterialTheme,
+                themeMode: state.themeMode,
+                theme: AppTheme.defaultTheme,
+                darkTheme: AppTheme.darkTheme,
                 onGenerateTitle: (BuildContext context) =>
                     context.l10n?.appTitle ?? 'Project Title',
                 routerConfig: AppRouter.router,
