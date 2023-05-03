@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../lib.dart';
 
@@ -161,15 +160,15 @@ class NavigationHelper {
   Future<T?> pushNamed<T extends Object?>(
     RouteName routeName, {
     bool pushGlobally = false,
-    Map<String, String> params = const <String, String>{},
-    Map<String, dynamic> queryParams = const <String, dynamic>{},
+    Map<String, String> pathParameters = const {},
+    Map<String, dynamic> queryParameters = const {},
     Object? extra,
   }) async {
     if (kIsWeb || pushGlobally) {
       return AppRouter.router.pushNamed<T>(
         routeName.name,
-        params: params,
-        queryParams: queryParams,
+        pathParameters: pathParameters,
+        queryParameters: queryParameters,
         extra: extra,
       );
     } else {
@@ -180,8 +179,8 @@ class NavigationHelper {
         /// navigating using the router of the current navigation bar index
         return _getRouter.pushNamed(
           routeName.name,
-          params: params,
-          queryParams: queryParams,
+          pathParameters: pathParameters,
+          queryParameters: queryParameters,
           extra: extra,
         );
       }
@@ -197,7 +196,7 @@ class NavigationHelper {
     if (kIsWeb || pushGlobally) {
       AppRouter.router.pushReplacementNamed(
         routeName.name,
-        queryParams: queryParams,
+        pathParameters: queryParams,
       );
     } else {
       if (navPageRouters.length <= routeName.index) {
@@ -207,7 +206,7 @@ class NavigationHelper {
         /// navigating using the router of the current navigation bar index
         _getRouter.pushReplacementNamed(
           routeName.name,
-          queryParams: queryParams,
+          pathParameters: queryParams,
         );
       }
     }

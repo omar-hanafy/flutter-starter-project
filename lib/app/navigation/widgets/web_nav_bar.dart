@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pinprick/app/app.dart';
+
+import '../../../app/app.dart';
 
 class WebNavigationBar extends StatelessWidget {
   const WebNavigationBar({super.key, required this.child});

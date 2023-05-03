@@ -22,7 +22,7 @@ class _ExploreViewState extends State<ExploreView>
       body: Center(
         child: Text(
           'Explore',
-          style: context.textTheme.displayLarge,
+          style: context.txtTheme.displayLarge,
         ),
       ),
     );

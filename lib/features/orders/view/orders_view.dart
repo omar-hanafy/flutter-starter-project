@@ -19,7 +19,7 @@ class _OrdersViewState extends State<OrdersView>
     super.build(context);
     return Scaffold(
       body: Center(
-        child: Text('Orders', style: context.textTheme.displayLarge),
+        child: Text('Orders', style: context.txtTheme.displayLarge),
       ),
     );
   }

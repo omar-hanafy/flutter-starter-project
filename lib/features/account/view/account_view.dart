@@ -19,7 +19,7 @@ class _AccountViewState extends State<AccountView>
     super.build(context);
     return Scaffold(
       body: Center(
-        child: Text('Account', style: context.textTheme.displayLarge),
+        child: Text('Account', style: context.txtTheme.displayLarge),
       ),
     );
   }

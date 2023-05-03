@@ -16,7 +16,7 @@ class AppLogo extends StatelessWidget {
       },
       child: Text(
         'App Logo',
-        style: context.textTheme.titleLarge!.copyWith(
+        style: context.txtTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.w900,
         ),
       ),

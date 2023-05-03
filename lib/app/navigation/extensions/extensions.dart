@@ -14,8 +14,8 @@ extension NavigationExtension on BuildContext {
       NavigationHelper(this).pushNamed(
         routeName,
         pushGlobally: pushGlobally,
-        params: params,
-        queryParams: queryParams,
+        pathParameters: params,
+        queryParameters: queryParams,
         extra: extra,
       );
 

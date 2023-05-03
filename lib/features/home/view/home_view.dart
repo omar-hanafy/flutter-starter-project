@@ -19,7 +19,7 @@ class _HomeViewState extends State<HomeView>
     super.build(context);
     return Scaffold(
       body: Center(
-        child: Text('Home', style: context.textTheme.displayLarge),
+        child: Text('Home', style: context.txtTheme.displayLarge),
       ),
     );
   }
