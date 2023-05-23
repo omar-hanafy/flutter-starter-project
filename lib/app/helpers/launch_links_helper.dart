@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:universal_html/html.dart' as html;
+// import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class LaunchLinksHelper {
@@ -8,7 +8,7 @@ abstract class LaunchLinksHelper {
     String? encodeQueryParameters(Map<String, String> params) {
       return params.entries
           .map((MapEntry<String, String> e) =>
-      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
           .join('&');
     }
 
@@ -27,7 +27,7 @@ abstract class LaunchLinksHelper {
 
   static Future<void> launchUrlLink(String url) async {
     if (kIsWeb) {
-      html.window.open(url, 'new tab');
+      // html.window.open(url, 'new tab');
     } else {
       if (!await launchUrl(Uri.parse(url))) {
         throw 'Could not launch $url';
@@ -35,7 +35,7 @@ abstract class LaunchLinksHelper {
     }
   }
 
-  static Future<void> launchPhoneDialer(String contactNumber) async {
+  static Future<void> launchPhocneDialer(String contactNumber) async {
     final uri = Uri(scheme: 'tel', path: contactNumber);
     if (!await launchUrl(uri)) {
       throw 'Could not launch $contactNumber';

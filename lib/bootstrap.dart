@@ -75,7 +75,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
           BlocProvider(
             create: (_) => InternetConnectionBloc()..add(CheckConnection()),
           ),
-          if (!kIsWeb) BlocProvider(create: (_) => NavigationBarCubit()),
         ],
         child: await builder(),
       ),

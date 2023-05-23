@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../app/app.dart';
+import '../../../../app/app.dart';
 
-class WebNavigationBar extends StatelessWidget {
-  const WebNavigationBar({super.key, required this.child});
+class WebBar extends StatelessWidget {
+  const WebBar({required this.navigationShell, super.key});
 
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,43 @@ class WebNavigationBar extends StatelessWidget {
 
     final isSmall = context.isSmallerThan(ScreenType.sTablet);
 
-    final navigationItems = context.navigationHelper.webNavItems;
+    final navigationItems = [
+      WebNavBarItem(
+        icon: const Icon(AppIcon.homeOutlined),
+        routeName: RouteName.home,
+        label: 'home',
+        navigationShell: navigationShell,
+        index: 0,
+      ),
+      WebNavBarItem(
+        icon: const Icon(AppIcon.searchOutlined),
+        routeName: RouteName.explore,
+        label: 'explore',
+        navigationShell: navigationShell,
+        index: 1,
+      ),
+      WebNavBarItem(
+        icon: const Icon(AppIcon.shoppingCartOutlined),
+        routeName: RouteName.cart,
+        label: 'cart',
+        navigationShell: navigationShell,
+        index: 2,
+      ),
+      WebNavBarItem(
+        icon: const Icon(AppIcon.archiveOutlined),
+        routeName: RouteName.orders,
+        label: 'orders',
+        navigationShell: navigationShell,
+        index: 3,
+      ),
+      WebNavBarItem(
+        icon: const Icon(AppIcon.personOutlined),
+        routeName: RouteName.account,
+        label: 'account',
+        navigationShell: navigationShell,
+        index: 4,
+      ),
+    ];
 
     final Widget changeBrightnessIcon = IconButton(
       onPressed: () => context.themeBloc.add(ChangeThemeMode(context)),
@@ -26,13 +62,6 @@ class WebNavigationBar extends StatelessWidget {
     return isSmall
         ? Scaffold(
             drawerEnableOpenDragGesture: false,
-            appBar: AppBar(
-              elevation: 0,
-              title: Text(
-                NavigationHelper(context).navBarTitle,
-              ),
-              actions: [changeBrightnessIcon],
-            ),
             drawer: Drawer(
               child: ListView(
                 padding:
@@ -44,10 +73,9 @@ class WebNavigationBar extends StatelessWidget {
                 ],
               ),
             ),
-            body: child,
+            body: navigationShell,
           )
         : Scaffold(
-            drawerEnableOpenDragGesture: false,
             body: Stack(
               children: [
                 Align(
@@ -88,7 +116,7 @@ class WebNavigationBar extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Expanded(child: child),
+                        Expanded(child: navigationShell),
                       ],
                     ),
                   ),
@@ -100,21 +128,28 @@ class WebNavigationBar extends StatelessWidget {
 }
 
 class WebNavBarItem extends StatelessWidget {
-  const WebNavBarItem(
-      {super.key, required this.routeName, this.icon, required this.label});
+  const WebNavBarItem({
+    required this.routeName,
+    required this.label,
+    required this.index,
+    required this.navigationShell,
+    this.icon,
+    super.key,
+  });
 
   final RouteName routeName;
   final String label;
   final Icon? icon;
+  final int index;
+  final StatefulNavigationShell navigationShell;
 
-  static TextStyle? _getTextStyle(BuildContext context,
-      {RouteName routeName = RouteName.home}) {
-    final firstPage = NavigationHelper(context).firstPage;
-    if (firstPage == routeName.name) {
+  TextStyle? _getTextStyle() {
+    if (index == navigationShell.currentIndex) {
       return const TextStyle(
-          color: AppColors.primaryColor,
-          fontSize: 20,
-          fontWeight: FontWeight.bold);
+        color: AppColors.primaryColor,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      );
     }
     return const TextStyle(fontSize: 16);
   }
@@ -126,17 +161,16 @@ class WebNavBarItem extends StatelessWidget {
         ? ListTile(
             title: Text(
               label,
-              style: _getTextStyle(context, routeName: routeName),
+              style: _getTextStyle(),
             ),
             onTap: () {
-              context
-                ..pushTo(routeName)
-                ..pop();
+              navigationShell.goIndex(index);
+              context.pop();
             },
           )
         : GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => context.pushTo(routeName),
+            onTap: () => navigationShell.goIndex(index),
             child: FocusableActionDetector(
               mouseCursor: SystemMouseCursors.click,
               child: SizedBox(
@@ -144,10 +178,7 @@ class WebNavBarItem extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   child: Text(
                     label,
-                    style: _getTextStyle(
-                      context,
-                      routeName: routeName,
-                    ),
+                    style: _getTextStyle(),
                   ),
                 ),
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../app.dart';
+import '../app.dart';
 
 abstract class SubRoutes {
   static GoRoute _myAppRoute({
@@ -10,11 +10,7 @@ abstract class SubRoutes {
       GoRoute(
         path: routeName.routeName,
         name: routeName.routeName,
-        pageBuilder: (context, state) => AppRouter.pageBuilder(
-          context,
-          state,
-          child: child,
-        ),
+        pageBuilder: (_, __) => MaterialPage(child: child),
       );
 
   static final List<RouteBase> home = [
@@ -24,13 +20,16 @@ abstract class SubRoutes {
   static final List<RouteBase> explore = [
     // _myAppRoute(uniqueId: "works/")
   ];
-  static final List<RouteBase> carte = [
+
+  static final List<RouteBase> cart = [
     // _myAppRoute(uniqueId: "resume/")
   ];
+
   static final List<RouteBase> orders = [
     // _myAppRoute(uniqueId: "about/"),
     // contactRoute(uniqueId: "about/")
   ];
+
   static final List<RouteBase> account = [
     // _myAppRoute(uniqueId: "about/"),
     // contactRoute(uniqueId: "about/")
