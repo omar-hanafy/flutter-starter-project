@@ -19,7 +19,7 @@ class App extends StatelessWidget {
                 theme: state.adaptiveCupertinoTheme,
                 onGenerateTitle: (BuildContext context) =>
                     context.l10n?.appTitle ?? 'Project Title',
-                routerConfig: AppRouter.router,
+                routerConfig: RouterManager.router,
                 locale: const Locale('en', 'EG'),
                 supportedLocales: AppLocalizations.supportedLocales,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -30,7 +30,7 @@ class App extends StatelessWidget {
                 darkTheme: AppTheme.darkTheme,
                 onGenerateTitle: (BuildContext context) =>
                     context.l10n?.appTitle ?? 'Project Title',
-                routerConfig: AppRouter.router,
+                routerConfig: RouterManager.router,
                 locale: const Locale('en', 'EG'),
                 supportedLocales: AppLocalizations.supportedLocales,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,

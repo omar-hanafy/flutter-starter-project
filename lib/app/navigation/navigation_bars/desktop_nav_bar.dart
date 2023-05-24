@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../app/app.dart';
 
 class DesktopNavigationBar extends StatelessWidget {
-  const DesktopNavigationBar({required this.navigationShell, super.key});
-
-  final StatefulNavigationShell navigationShell;
+  const DesktopNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final navigationShell = context.navigationCubitWatch.state;
+
     return Row(
       children: [
         SizedBox(

@@ -58,9 +58,14 @@ class _HomeViewState extends State<HomeView> {
         body: ListView.builder(
           controller: scrollController,
           itemCount: 10,
-          itemBuilder: (_, __) => const SizedBox(
-            height: 400,
-            child: Card(),
+          itemBuilder: (_, __) => GestureDetector(
+            onTap: () {
+              context.goPush(AppRoute.feature);
+            },
+            child: const SizedBox(
+              height: 400,
+              child: Card(),
+            ),
           ),
         ),
       ),

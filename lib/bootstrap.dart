@@ -32,53 +32,44 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     );
   };
 
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // modify and manage app window on desktop platforms
-  if (defaultTargetPlatform.isDesktop) {
-    await windowManager.ensureInitialized();
-    const windowOptions = WindowOptions();
-
-    await windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.setMinimumSize(const Size(500, 500));
-      await windowManager.focus();
-    });
-  }
-
-  HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory: kIsWeb
-          ? HydratedStorage.webStorageDirectory
-          : await getApplicationDocumentsDirectory());
-
   ///    The Bloc.observer = AppBlocObserver();
   ///    is a deprecated way of observing what the bloc(s) of the application
   ///    are doing. The AppBlocObserver is defining a bunch of callbacks that
   ///    will be executed when "events" are fired, like error, and change.
   Bloc.observer = AppBlocObserver();
 
-  // AuthenticationRepository authRepository;
-  // await Firebase.initializeApp(
-  //     // todo: generate your firebase Options.
-  //     // options: DefaultFirebaseOptions.currentPlatform,
-  //     );
-
-  // authRepository = AuthenticationRepository();
-  // await authRepository.user.first;
-
   await runZonedGuarded(
-    () async => runApp(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => ThemeBloc(),
-          ),
-          BlocProvider(
-            create: (_) => InternetConnectionBloc()..add(CheckConnection()),
-          ),
-        ],
-        child: await builder(),
-      ),
-    ),
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      HydratedBloc.storage = await HydratedStorage.build(
+          storageDirectory: kIsWeb
+              ? HydratedStorage.webStorageDirectory
+              : await getApplicationDocumentsDirectory());
+      // modify and manage app window on desktop platforms
+      if (defaultTargetPlatform.isDesktop) {
+        await windowManager.ensureInitialized();
+        const windowOptions = WindowOptions();
+
+        await windowManager.waitUntilReadyToShow(windowOptions, () async {
+          await windowManager.setMinimumSize(const Size(500, 500));
+          await windowManager.focus();
+        });
+      }
+
+      return runApp(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => ThemeBloc(),
+            ),
+            BlocProvider(
+              create: (_) => InternetConnectionBloc()..add(CheckConnection()),
+            ),
+          ],
+          child: await builder(),
+        ),
+      );
+    },
 
     ///    That app is then going to be run in an error zone, where the
     ///    interesting part is:

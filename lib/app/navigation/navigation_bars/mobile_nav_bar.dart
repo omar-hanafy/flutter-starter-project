@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_starter/lib.dart';
 
 class MobileNavigationBar extends StatelessWidget {
-  const MobileNavigationBar({required this.navigationShell, super.key});
-
-  final StatefulNavigationShell navigationShell;
+  const MobileNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final navigationShell = context.navigationCubitWatch.state;
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(

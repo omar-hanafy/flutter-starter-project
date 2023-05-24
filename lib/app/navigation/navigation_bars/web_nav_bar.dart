@@ -3,54 +3,41 @@ import 'package:flutter/material.dart';
 import '../../../../app/app.dart';
 
 class WebBar extends StatelessWidget {
-  const WebBar({required this.navigationShell, super.key});
-
-  final StatefulNavigationShell navigationShell;
+  const WebBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = context.widthPx;
     debugPrint('${context.screenType} screen width: $screenWidth');
-
     final isMedium = context.isSmallerThan(ScreenType.lTablet);
-
     final isSmall = context.isSmallerThan(ScreenType.sTablet);
+    final navigationShell = context.navigationCubitWatch.state;
 
     final navigationItems = [
-      WebNavBarItem(
-        icon: const Icon(AppIcon.homeOutlined),
-        routeName: RouteName.home,
+      const WebNavBarItem(
+        icon: Icon(AppIcon.homeOutlined),
+        route: AppRoute.home,
         label: 'home',
-        navigationShell: navigationShell,
-        index: 0,
       ),
-      WebNavBarItem(
-        icon: const Icon(AppIcon.searchOutlined),
-        routeName: RouteName.explore,
+      const WebNavBarItem(
+        icon: Icon(AppIcon.searchOutlined),
+        route: AppRoute.explore,
         label: 'explore',
-        navigationShell: navigationShell,
-        index: 1,
       ),
-      WebNavBarItem(
-        icon: const Icon(AppIcon.shoppingCartOutlined),
-        routeName: RouteName.cart,
+      const WebNavBarItem(
+        icon: Icon(AppIcon.shoppingCartOutlined),
+        route: AppRoute.cart,
         label: 'cart',
-        navigationShell: navigationShell,
-        index: 2,
       ),
-      WebNavBarItem(
-        icon: const Icon(AppIcon.archiveOutlined),
-        routeName: RouteName.orders,
+      const WebNavBarItem(
+        icon: Icon(AppIcon.archiveOutlined),
+        route: AppRoute.orders,
         label: 'orders',
-        navigationShell: navigationShell,
-        index: 3,
       ),
-      WebNavBarItem(
-        icon: const Icon(AppIcon.personOutlined),
-        routeName: RouteName.account,
+      const WebNavBarItem(
+        icon: Icon(AppIcon.personOutlined),
+        route: AppRoute.account,
         label: 'account',
-        navigationShell: navigationShell,
-        index: 4,
       ),
     ];
 
@@ -62,12 +49,13 @@ class WebBar extends StatelessWidget {
     return isSmall
         ? Scaffold(
             drawerEnableOpenDragGesture: false,
+            appBar: AppBar(),
             drawer: Drawer(
               child: ListView(
                 padding:
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 children: [
-                  const AppLogo(closeDrawer: true),
+                  const AppLogo(inDrawer: true),
                   const SizedBox(height: 30),
                   ...navigationItems
                 ],
@@ -129,48 +117,42 @@ class WebBar extends StatelessWidget {
 
 class WebNavBarItem extends StatelessWidget {
   const WebNavBarItem({
-    required this.routeName,
+    required this.route,
     required this.label,
-    required this.index,
-    required this.navigationShell,
     this.icon,
     super.key,
   });
 
-  final RouteName routeName;
+  final AppRoute route;
   final String label;
   final Icon? icon;
-  final int index;
-  final StatefulNavigationShell navigationShell;
-
-  TextStyle? _getTextStyle() {
-    if (index == navigationShell.currentIndex) {
-      return const TextStyle(
-        color: AppColors.primaryColor,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      );
-    }
-    return const TextStyle(fontSize: 16);
-  }
 
   @override
   Widget build(BuildContext context) {
     final isSmall = context.isSmallerThan(ScreenType.sTablet);
+    final cubit = context.navigationCubitWatch;
+    final textStyle = route.branchIndex == cubit.index
+        ? TextStyle(
+            color: context.themeData.primaryColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          )
+        : const TextStyle(fontSize: 16);
+
     return isSmall
         ? ListTile(
             title: Text(
               label,
-              style: _getTextStyle(),
+              style: textStyle,
             ),
             onTap: () {
-              navigationShell.goIndex(index);
+              cubit.goIndex(route.branchIndex);
               context.pop();
             },
           )
         : GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => navigationShell.goIndex(index),
+            onTap: () => cubit.goIndex(route.branchIndex),
             child: FocusableActionDetector(
               mouseCursor: SystemMouseCursors.click,
               child: SizedBox(
@@ -178,7 +160,7 @@ class WebNavBarItem extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   child: Text(
                     label,
-                    style: _getTextStyle(),
+                    style: textStyle,
                   ),
                 ),
               ),
