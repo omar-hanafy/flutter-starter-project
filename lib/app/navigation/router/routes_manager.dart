@@ -3,71 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_starter/features/new_feature/feature.dart';
 
-import '../../features/new_feature/view/feature_view.dart';
-import '../../lib.dart';
-
-enum AppRoute {
-  home,
-  explore,
-  cart,
-  orders,
-  account,
-  feature,
-  notFound,
-}
+import '../../../features/new_feature/view/feature_view.dart';
+import '../../../lib.dart';
 
 abstract class RouterManager {
   static final _rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
-  static RouteBase _generateRoute(
-          {required AppRoute route,
-          required Widget child,
-          List<RouteBase> subRoutes = const [],
-          String? subRouteKey,
-          GlobalKey<NavigatorState>? parentNavigatorKey}) =>
-      GoRoute(
-        parentNavigatorKey: parentNavigatorKey,
-
-        /// note that sub routes should not take the [route.path] instead we use
-        /// the [route.name]
-        path: subRouteKey.isNotEmptyOrNull ? route.name : route.routePath,
-        name: subRouteKey.isNotEmptyOrNull
-            ? route.nameWithKey(subRouteKey!)
-            : route.name,
-        routes: subRoutes,
-        pageBuilder: (_, __) => MaterialPage(child: child),
-      );
-
   static RouteBase feature({
     String? subRouteKey,
-    GlobalKey<NavigatorState>? parentNavigatorKey,
     List<RouteBase> subRoutes = const [],
   }) =>
       _generateRoute(
-        parentNavigatorKey: parentNavigatorKey,
         route: AppRoute.feature,
-        child: const FeatureView(),
         subRouteKey: subRouteKey,
         subRoutes: subRoutes,
+        pageBuilder: (_, state) => _pageBuilder(
+          state,
+          child: FeatureView(params: state.extra),
+        ),
       );
 
   static List<RouteBase> get globalRoutes => [
-        feature(parentNavigatorKey: _rootKey),
+        feature(),
       ];
 
   static StatefulShellBranch get homeBranch {
     return StatefulShellBranch(
-      navigatorKey: GlobalKey<NavigatorState>(debugLabel: '_homeRouter'),
+      navigatorKey: GlobalKey(debugLabel: AppRoute.home.branchKey),
       routes: [
-        _generateRoute(
+        _generateBranchRoute(
           route: AppRoute.home,
           child: const HomeView(),
           subRoutes: [
             feature(
               subRouteKey: 'home',
-              subRoutes: [
-                feature(subRouteKey: 'home/feature'),
-              ],
             ),
           ],
         ),
@@ -76,9 +45,9 @@ abstract class RouterManager {
   }
 
   static StatefulShellBranch get exploreBranch => StatefulShellBranch(
-        navigatorKey: GlobalKey<NavigatorState>(debugLabel: '_exploreRouter'),
+        navigatorKey: GlobalKey(debugLabel: AppRoute.explore.branchKey),
         routes: [
-          _generateRoute(
+          _generateBranchRoute(
             route: AppRoute.explore,
             child: const ExploreView(),
           ),
@@ -86,9 +55,9 @@ abstract class RouterManager {
       );
 
   static StatefulShellBranch get cartBranch => StatefulShellBranch(
-        navigatorKey: GlobalKey<NavigatorState>(debugLabel: '_cartRouter'),
+        navigatorKey: GlobalKey(debugLabel: AppRoute.cart.branchKey),
         routes: [
-          _generateRoute(
+          _generateBranchRoute(
             route: AppRoute.cart,
             child: const CartView(),
           ),
@@ -96,9 +65,9 @@ abstract class RouterManager {
       );
 
   static StatefulShellBranch get ordersBranch => StatefulShellBranch(
-        navigatorKey: GlobalKey<NavigatorState>(debugLabel: '_ordersRouter'),
+        navigatorKey: GlobalKey(debugLabel: AppRoute.orders.branchKey),
         routes: [
-          _generateRoute(
+          _generateBranchRoute(
             route: AppRoute.orders,
             child: const OrdersView(),
           ),
@@ -106,9 +75,9 @@ abstract class RouterManager {
       );
 
   static StatefulShellBranch get accountBranch => StatefulShellBranch(
-        navigatorKey: GlobalKey<NavigatorState>(debugLabel: '_accountRouter'),
+        navigatorKey: GlobalKey(debugLabel: AppRoute.account.branchKey),
         routes: [
-          _generateRoute(
+          _generateBranchRoute(
             route: AppRoute.account,
             child: const AccountView(),
           ),
@@ -156,4 +125,68 @@ abstract class RouterManager {
           ...RouterManager.globalRoutes,
         ],
       );
+
+  static RouteBase _generateRoute({
+    required AppRoute route,
+    Widget? child,
+    GoRouterPageBuilder? pageBuilder,
+    List<RouteBase> subRoutes = const [],
+
+    /// the subRoute key will be the path of the parent routes.
+    /// for example lets say we have cart route under home branch, if you want
+    /// to add a new route called product under the cart. the hierarchy should
+    /// be something like that:
+    ///  home --- no subRouteKey cause it is parent
+    ///    cart --- subRouteKey = 'home'
+    ///      Product --- subRouteKey = 'home/cart'
+    /// note that all branches and global routes should not have 'subRouteKey'.
+    /// if subRouteKey is provided the to a global branch the navigation helper
+    /// will consider it a subRoute and thus navigating to this route will give
+    /// you 404.
+    String? subRouteKey,
+  }) {
+    final isSub = subRouteKey.isNotEmptyOrNull;
+    assert(
+      isSub && !route.isGlobalOnly || !isSub,
+      'global only routes should not have a subRouteKey. StackTrace: ${StackTrace.current}',
+    );
+    assert(
+      pageBuilder.isNotNull || child.isNotNull,
+      'either pageBuilder or child must be provided',
+    );
+    return GoRoute(
+      /// we pass the root key to all routes that will be in the global routes.
+      parentNavigatorKey: isSub ? null : _rootKey,
+
+      /// note that sub routes should not take the [route.path] instead we use
+      /// the [route.name]
+      path: isSub ? route.name : route.routePath,
+      name: isSub ? route.nameWithKey(subRouteKey!) : route.name,
+      routes: subRoutes,
+      pageBuilder:
+          pageBuilder ?? (_, state) => _pageBuilder(state, child: child!),
+    );
+  }
+
+  static Page<dynamic> _pageBuilder(
+    GoRouterState state, {
+    required Widget child,
+  }) {
+    return kIsWeb
+        ? NoTransitionPage<void>(key: state.pageKey, child: child)
+        : MaterialPage<void>(key: state.pageKey, child: child);
+  }
+
+  static RouteBase _generateBranchRoute({
+    required AppRoute route,
+    required Widget child,
+    List<RouteBase> subRoutes = const [],
+  }) {
+    return GoRoute(
+      path: route.routePath,
+      name: route.name,
+      routes: subRoutes,
+      pageBuilder: (_, __) => MaterialPage(child: child),
+    );
+  }
 }

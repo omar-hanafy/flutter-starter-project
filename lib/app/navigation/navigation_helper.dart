@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../app.dart';
+import 'navigation.dart';
 
 extension NavigationExtension on BuildContext {
   Future<T?> goPush<T extends Object?>(
@@ -11,27 +11,25 @@ extension NavigationExtension on BuildContext {
     Map<String, dynamic> queryParameters = const {},
     Object? extra,
   }) async {
-    if (route.isRouterBranch) {
+    if (route.isBranch) {
       navigationCubit.goIndex(route.branchIndex);
       return null;
-    }
-    try {
-      return GoRouter.of(this).pushNamed<T>(
-        pushGlobally ? route.name : _getSubRouteName(route),
-        pathParameters: pathParameters,
-        queryParameters: queryParameters,
-        extra: extra,
-      );
-    } catch (_) {
-      if (!forcePushToSubRoutes) {
+    } else {
+      try {
+        return GoRouter.of(this).pushNamed<T>(
+          pushGlobally ? route.name : _getSubRouteName(route),
+          pathParameters: pathParameters,
+          queryParameters: queryParameters,
+          extra: extra,
+        );
+      } catch (_) {
+        if (forcePushToSubRoutes) rethrow;
         return GoRouter.of(this).pushNamed<T>(
           route.name,
           pathParameters: pathParameters,
           queryParameters: queryParameters,
           extra: extra,
         );
-      } else {
-        rethrow;
       }
     }
   }
@@ -63,7 +61,6 @@ extension NavigationExtension on BuildContext {
 
   String get routeName {
     var loc = _routeLocation;
-    print(loc);
     if (loc == '/') return 'home';
     if (loc.startsWith('/')) loc = loc.substring(1);
     if (loc.endsWith('/')) loc = loc.substring(0, loc.length - 1);
@@ -83,57 +80,5 @@ extension StatefulNavigationShellEx on StatefulNavigationShell {
       // using the initialLocation parameter of goBranch.
       initialLocation: index == currentIndex,
     );
-  }
-}
-
-extension AppRouteOtherExtension on AppRoute {
-  bool get isHome => this == AppRoute.home;
-
-  bool get isExplore => this == AppRoute.explore;
-
-  bool get isCart => this == AppRoute.cart;
-
-  bool get isOrders => this == AppRoute.orders;
-
-  bool get isAccount => this == AppRoute.account;
-
-  bool get isFeature => this == AppRoute.feature;
-
-  bool get isNotFound => this == AppRoute.notFound;
-
-  bool get isRouterBranch =>
-      isHome || isExplore || isCart || isOrders || isAccount;
-
-  String get routePath => '/$name';
-
-  String nameWithKey(String key) => '$key/$name';
-
-  int get branchIndex {
-    if (isExplore) return 1;
-    if (isCart) return 2;
-    if (isOrders) return 3;
-    if (isAccount) return 4;
-    return 0;
-  }
-}
-
-extension AppRouteStringExtension on String? {
-  AppRoute get appRoute {
-    switch (this?.toLowerCase()) {
-      case 'home':
-        return AppRoute.home;
-      case 'explore':
-        return AppRoute.explore;
-      case 'cart':
-        return AppRoute.cart;
-      case 'orders':
-        return AppRoute.orders;
-      case 'account':
-        return AppRoute.account;
-      case 'feature':
-        return AppRoute.feature;
-      default:
-        return AppRoute.notFound;
-    }
   }
 }

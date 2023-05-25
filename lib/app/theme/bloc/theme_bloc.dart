@@ -17,16 +17,12 @@ class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
     switch (event.changeType) {
       case BrightnessChangeType.dark:
         emit(ThemeState.getDark());
-        break;
       case BrightnessChangeType.light:
         emit(ThemeState.getLight());
-        break;
       case BrightnessChangeType.system:
         emit(ThemeState.getSystem(sysBr));
-        break;
       case BrightnessChangeType.toggle:
         emit(ThemeState.getToggled(state._brightness));
-        break;
     }
   }
 
