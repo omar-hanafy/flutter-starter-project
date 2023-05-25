@@ -4,7 +4,7 @@ description: My new Flutter app
 publish_to: none
 
 environment:
-  sdk: '>=3.0.1 <4.0.0'
+  sdk: '>=3.0.2 <4.0.0'
 
 dependencies:
   flutter:
@@ -25,6 +25,8 @@ dependencies:
 
   authentication_repository:
     path: ./packages/authentication_repository
+  hive_api:
+    path: ./packages/hive_api
 
 dev_dependencies:
   flutter_test:
