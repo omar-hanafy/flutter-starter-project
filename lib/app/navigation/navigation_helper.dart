@@ -61,7 +61,7 @@ extension NavigationExtension on BuildContext {
 
   String get routeName {
     var loc = _routeLocation;
-    if (loc == '/') return 'home';
+    if (loc == '/') return AppRoute.main.name;
     if (loc.startsWith('/')) loc = loc.substring(1);
     if (loc.endsWith('/')) loc = loc.substring(0, loc.length - 1);
     loc = loc.split('?').first;

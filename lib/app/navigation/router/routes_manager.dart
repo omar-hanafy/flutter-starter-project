@@ -6,9 +6,7 @@ import 'package:flutter_starter/features/new_feature/feature.dart';
 import '../../../features/new_feature/view/feature_view.dart';
 import '../../../lib.dart';
 
-abstract class RouterManager {
-  static final _rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-
+abstract class _RouterManager {
   static RouteBase feature({
     String? subRouteKey,
     List<RouteBase> subRoutes = const [],
@@ -27,104 +25,9 @@ abstract class RouterManager {
         feature(),
       ];
 
-  static StatefulShellBranch get homeBranch {
-    return StatefulShellBranch(
-      navigatorKey: GlobalKey(debugLabel: AppRoute.home.branchKey),
-      routes: [
-        _generateBranchRoute(
-          route: AppRoute.home,
-          child: const HomeView(),
-          subRoutes: [
-            feature(
-              subRouteKey: 'home',
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  static StatefulShellBranch get exploreBranch => StatefulShellBranch(
-        navigatorKey: GlobalKey(debugLabel: AppRoute.explore.branchKey),
-        routes: [
-          _generateBranchRoute(
-            route: AppRoute.explore,
-            child: const ExploreView(),
-          ),
-        ],
-      );
-
-  static StatefulShellBranch get cartBranch => StatefulShellBranch(
-        navigatorKey: GlobalKey(debugLabel: AppRoute.cart.branchKey),
-        routes: [
-          _generateBranchRoute(
-            route: AppRoute.cart,
-            child: const CartView(),
-          ),
-        ],
-      );
-
-  static StatefulShellBranch get ordersBranch => StatefulShellBranch(
-        navigatorKey: GlobalKey(debugLabel: AppRoute.orders.branchKey),
-        routes: [
-          _generateBranchRoute(
-            route: AppRoute.orders,
-            child: const OrdersView(),
-          ),
-        ],
-      );
-
-  static StatefulShellBranch get accountBranch => StatefulShellBranch(
-        navigatorKey: GlobalKey(debugLabel: AppRoute.account.branchKey),
-        routes: [
-          _generateBranchRoute(
-            route: AppRoute.account,
-            child: const AccountView(),
-          ),
-        ],
-      );
-
-  static final GoRouter router = GoRouter(
-    navigatorKey: _rootKey,
-    initialLocation: AppRoute.home.routePath,
-    observers: <NavigatorObserver>[AppRouterObserver()],
-    routes: <RouteBase>[
-      GoRoute(
-        path: '/',
-        redirect: (BuildContext context, GoRouterState state) =>
-            AppRoute.home.routePath,
-      ),
-      StatefulShellRoute.indexedStack(
-        builder: (
-          BuildContext context,
-          GoRouterState state,
-          StatefulNavigationShell ns,
-        ) {
-          return BlocProvider(
-            create: (_) => NavigationCubit(ns),
-            child: Builder(
-              builder: (context) {
-                context.navigationCubit.reBuild(ns);
-                return kIsWeb
-                    ? const WebBar()
-                    : context.isDesktop
-                        ? const DesktopNavigationBar()
-                        : const MobileNavigationBar();
-              },
-            ),
-          );
-        },
-        branches: <StatefulShellBranch>[
-          RouterManager.homeBranch,
-          RouterManager.exploreBranch,
-          RouterManager.cartBranch,
-          RouterManager.ordersBranch,
-          RouterManager.accountBranch,
-        ],
-      ),
-      ...RouterManager.globalRoutes,
-    ],
-  );
+  static List<RouteBase> get homeSubRoutes => [
+        feature(subRouteKey: 'home'),
+      ];
 
   static RouteBase _generateRoute({
     required AppRoute route,
@@ -156,7 +59,7 @@ abstract class RouterManager {
     );
     return GoRoute(
       /// we pass the root key to all routes that will be in the global routes.
-      parentNavigatorKey: isSub ? null : _rootKey,
+      parentNavigatorKey: isSub ? null : MainRouter.rootKey,
 
       /// note that sub routes should not take the [route.path] instead we use
       /// the [route.name]
@@ -177,7 +80,7 @@ abstract class RouterManager {
         : MaterialPage<void>(key: state.pageKey, child: child);
   }
 
-  static RouteBase _generateBranchRoute({
+  static RouteBase generateBranchRoute({
     required AppRoute route,
     required Widget child,
     List<RouteBase> subRoutes = const [],
@@ -189,4 +92,102 @@ abstract class RouterManager {
       pageBuilder: (_, __) => MaterialPage(child: child),
     );
   }
+}
+
+abstract class MainRouter {
+  static final rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+  static final GoRouter router = GoRouter(
+    navigatorKey: rootKey,
+    initialLocation: AppRoute.home.routePath,
+    observers: <NavigatorObserver>[AppRouterObserver()],
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/',
+        redirect: (BuildContext context, GoRouterState state) =>
+            AppRoute.home.routePath,
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (
+          BuildContext context,
+          GoRouterState state,
+          StatefulNavigationShell ns,
+        ) {
+          return BlocProvider(
+            create: (_) => NavigationCubit(ns),
+            child: Builder(
+              builder: (context) {
+                context.navigationCubit.reBuild(ns);
+                return kIsWeb
+                    ? const WebBar()
+                    : context.isDesktop
+                        ? const DesktopNavigationBar()
+                        : const MobileNavigationBar();
+              },
+            ),
+          );
+        },
+        branches: <StatefulShellBranch>[
+          homeBranch,
+          exploreBranch,
+          cartBranch,
+          ordersBranch,
+          accountBranch,
+        ],
+      ),
+      ..._RouterManager.globalRoutes,
+    ],
+  );
+
+  static StatefulShellBranch get homeBranch {
+    return StatefulShellBranch(
+      navigatorKey: GlobalKey(debugLabel: AppRoute.home.branchKey),
+      routes: [
+        _RouterManager.generateBranchRoute(
+          route: AppRoute.home,
+          child: const HomeView(),
+          subRoutes: _RouterManager.homeSubRoutes,
+        ),
+      ],
+    );
+  }
+
+  static StatefulShellBranch get exploreBranch => StatefulShellBranch(
+        navigatorKey: GlobalKey(debugLabel: AppRoute.explore.branchKey),
+        routes: [
+          _RouterManager.generateBranchRoute(
+            route: AppRoute.explore,
+            child: const ExploreView(),
+          ),
+        ],
+      );
+
+  static StatefulShellBranch get cartBranch => StatefulShellBranch(
+        navigatorKey: GlobalKey(debugLabel: AppRoute.cart.branchKey),
+        routes: [
+          _RouterManager.generateBranchRoute(
+            route: AppRoute.cart,
+            child: const CartView(),
+          ),
+        ],
+      );
+
+  static StatefulShellBranch get ordersBranch => StatefulShellBranch(
+        navigatorKey: GlobalKey(debugLabel: AppRoute.orders.branchKey),
+        routes: [
+          _RouterManager.generateBranchRoute(
+            route: AppRoute.orders,
+            child: const OrdersView(),
+          ),
+        ],
+      );
+
+  static StatefulShellBranch get accountBranch => StatefulShellBranch(
+        navigatorKey: GlobalKey(debugLabel: AppRoute.account.branchKey),
+        routes: [
+          _RouterManager.generateBranchRoute(
+            route: AppRoute.account,
+            child: const AccountView(),
+          ),
+        ],
+      );
 }
