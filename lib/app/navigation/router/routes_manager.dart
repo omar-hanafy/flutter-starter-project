@@ -84,47 +84,47 @@ abstract class RouterManager {
         ],
       );
 
-  static GoRouter get router => GoRouter(
-        navigatorKey: _rootKey,
-        initialLocation: AppRoute.home.routePath,
-        observers: <NavigatorObserver>[AppRouterObserver()],
-        routes: <RouteBase>[
-          GoRoute(
-            path: '/',
-            redirect: (BuildContext context, GoRouterState state) =>
-                AppRoute.home.routePath,
-          ),
-          StatefulShellRoute.indexedStack(
-            builder: (
-              BuildContext context,
-              GoRouterState state,
-              StatefulNavigationShell ns,
-            ) {
-              return BlocProvider(
-                create: (_) => NavigationCubit(ns),
-                child: Builder(
-                  builder: (context) {
-                    context.navigationCubit.reBuild(ns);
-                    return kIsWeb
-                        ? const WebBar()
-                        : context.isDesktop
-                            ? const DesktopNavigationBar()
-                            : const MobileNavigationBar();
-                  },
-                ),
-              );
-            },
-            branches: <StatefulShellBranch>[
-              RouterManager.homeBranch,
-              RouterManager.exploreBranch,
-              RouterManager.cartBranch,
-              RouterManager.ordersBranch,
-              RouterManager.accountBranch,
-            ],
-          ),
-          ...RouterManager.globalRoutes,
+  static final GoRouter router = GoRouter(
+    navigatorKey: _rootKey,
+    initialLocation: AppRoute.home.routePath,
+    observers: <NavigatorObserver>[AppRouterObserver()],
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/',
+        redirect: (BuildContext context, GoRouterState state) =>
+            AppRoute.home.routePath,
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (
+          BuildContext context,
+          GoRouterState state,
+          StatefulNavigationShell ns,
+        ) {
+          return BlocProvider(
+            create: (_) => NavigationCubit(ns),
+            child: Builder(
+              builder: (context) {
+                context.navigationCubit.reBuild(ns);
+                return kIsWeb
+                    ? const WebBar()
+                    : context.isDesktop
+                        ? const DesktopNavigationBar()
+                        : const MobileNavigationBar();
+              },
+            ),
+          );
+        },
+        branches: <StatefulShellBranch>[
+          RouterManager.homeBranch,
+          RouterManager.exploreBranch,
+          RouterManager.cartBranch,
+          RouterManager.ordersBranch,
+          RouterManager.accountBranch,
         ],
-      );
+      ),
+      ...RouterManager.globalRoutes,
+    ],
+  );
 
   static RouteBase _generateRoute({
     required AppRoute route,
