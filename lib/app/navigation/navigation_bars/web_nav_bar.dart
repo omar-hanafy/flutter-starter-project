@@ -145,14 +145,13 @@ class WebNavBarItem extends StatelessWidget {
               label,
               style: textStyle,
             ),
-            onTap: () {
-              cubit.goIndex(route.branchIndex);
-              context.pop();
-            },
+            onTap: () => context
+              ..goPush(route)
+              ..pop(),
           )
         : GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => cubit.goIndex(route.branchIndex),
+            onTap: () => context.goPush(route),
             child: FocusableActionDetector(
               mouseCursor: SystemMouseCursors.click,
               child: SizedBox(

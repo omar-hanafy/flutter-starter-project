@@ -8,16 +8,18 @@ import '../../../lib.dart';
 
 abstract class _RouterManager {
   static RouteBase feature({
-    String? subRouteKey,
+    String? parentPath,
     List<RouteBase> subRoutes = const [],
   }) =>
       _generateRoute(
         route: AppRoute.feature,
-        subRouteKey: subRouteKey,
+        parentPath: parentPath,
         subRoutes: subRoutes,
         pageBuilder: (_, state) => _pageBuilder(
           state,
-          child: FeatureView(params: state.extra),
+          child: FeatureView(
+            params: FeatureViewArgs.fromState(state),
+          ),
         ),
       );
 
@@ -26,32 +28,55 @@ abstract class _RouterManager {
       ];
 
   static List<RouteBase> get homeSubRoutes => [
-        feature(subRouteKey: 'home'),
+        feature(parentPath: 'home'),
       ];
 
+  static List<RouteBase> get exploreSubRoutes => [
+        feature(parentPath: 'explore'),
+      ];
+
+  static List<RouteBase> get cartSubRoutes => [
+        feature(parentPath: 'cart'),
+      ];
+
+  static List<RouteBase> get ordersSubRoutes => [
+        feature(parentPath: 'orders'),
+      ];
+
+  static List<RouteBase> get accountSubRoutes => [
+        feature(parentPath: 'account'),
+      ];
+
+  /// note: do not use this to generate
+  /// branch route instead use [generateBranchRoute]
   static RouteBase _generateRoute({
     required AppRoute route,
     Widget? child,
     GoRouterPageBuilder? pageBuilder,
     List<RouteBase> subRoutes = const [],
 
-    /// the subRoute key will be the path of the parent routes.
+    /// the parentPath will be the path of the parent routes.
     /// for example lets say we have cart route under home branch, if you want
     /// to add a new route called product under the cart. the hierarchy should
     /// be something like that:
-    ///  home --- no subRouteKey cause it is parent
-    ///    cart --- subRouteKey = 'home'
-    ///      Product --- subRouteKey = 'home/cart'
-    /// note that all branches and global routes should not have 'subRouteKey'.
-    /// if subRouteKey is provided the to a global branch the navigation helper
+    ///  home ---> no parentPath cause it is first parent
+    ///    cart ---> parentPath = 'home'
+    ///      Product ---> parentPath = 'home/cart'
+    /// The [parentPath] ONLY contains '/' between the name e.g
+    /// 'home/cart' is GOOD and '/home/cart/' is BAD
+    ///
+    /// note that all global routes should not have 'parentPath'.
+    /// if parentPath is provided the to a global branch the navigation helper
     /// will consider it a subRoute and thus navigating to this route will give
     /// you 404.
-    String? subRouteKey,
+    String? parentPath,
   }) {
-    final isSub = subRouteKey.isNotEmptyOrNull;
+    final isSub = parentPath.isNotEmptyOrNull;
+    assert(!route.isBranch,
+        'You cannot generate a branch here consider using _generateRoute');
     assert(
       isSub && !route.isGlobalOnly || !isSub,
-      'global only routes should not have a subRouteKey. StackTrace: ${StackTrace.current}',
+      'global only routes should not have a parentPath. StackTrace: ${StackTrace.current}',
     );
     assert(
       pageBuilder.isNotNull || child.isNotNull,
@@ -64,7 +89,7 @@ abstract class _RouterManager {
       /// note that sub routes should not take the [route.path] instead we use
       /// the [route.name]
       path: isSub ? route.name : route.routePath,
-      name: isSub ? route.nameWithKey(subRouteKey!) : route.name,
+      name: isSub ? route.nameWithKey(parentPath!) : route.name,
       routes: subRoutes,
       pageBuilder:
           pageBuilder ?? (_, state) => _pageBuilder(state, child: child!),
@@ -85,6 +110,8 @@ abstract class _RouterManager {
     required Widget child,
     List<RouteBase> subRoutes = const [],
   }) {
+    assert(route.isBranch,
+        'You can only generate a branch here consider using generateBranchRoute for other routes');
     return GoRoute(
       path: route.routePath,
       name: route.name,
@@ -94,6 +121,7 @@ abstract class _RouterManager {
   }
 }
 
+//
 abstract class MainRouter {
   static final rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
   static final GoRouter router = GoRouter(
@@ -157,6 +185,7 @@ abstract class MainRouter {
           _RouterManager.generateBranchRoute(
             route: AppRoute.explore,
             child: const ExploreView(),
+            subRoutes: _RouterManager.exploreSubRoutes,
           ),
         ],
       );
@@ -167,6 +196,7 @@ abstract class MainRouter {
           _RouterManager.generateBranchRoute(
             route: AppRoute.cart,
             child: const CartView(),
+            subRoutes: _RouterManager.cartSubRoutes,
           ),
         ],
       );
@@ -177,6 +207,7 @@ abstract class MainRouter {
           _RouterManager.generateBranchRoute(
             route: AppRoute.orders,
             child: const OrdersView(),
+            subRoutes: _RouterManager.ordersSubRoutes,
           ),
         ],
       );
@@ -187,6 +218,7 @@ abstract class MainRouter {
           _RouterManager.generateBranchRoute(
             route: AppRoute.account,
             child: const AccountView(),
+            subRoutes: _RouterManager.accountSubRoutes,
           ),
         ],
       );

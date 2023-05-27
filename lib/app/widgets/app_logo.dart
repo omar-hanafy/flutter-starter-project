@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_starter/features/new_feature/feature.dart';
 
 import '../../lib.dart';
 
@@ -11,9 +12,7 @@ class AppLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.goPush(
-          AppRoute.feature,
-        );
+        context.goPush(AppRoute.feature, args: FeatureViewArgs(3));
         if (inDrawer) context.pop();
       },
       child: Text(

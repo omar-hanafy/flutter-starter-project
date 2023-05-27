@@ -7,8 +7,8 @@ extension NavigationExtension on BuildContext {
     AppRoute route, {
     bool pushGlobally = false,
     bool forcePushToSubRoutes = false,
-    Map<String, String> pathParameters = const {},
-    Map<String, dynamic> queryParameters = const {},
+    RouterBaseArgs? args,
+    bool isQueryArgs = true,
     Object? extra,
   }) async {
     if (route.isBranch) {
@@ -16,22 +16,31 @@ extension NavigationExtension on BuildContext {
       return null;
     } else {
       try {
-        return GoRouter.of(this).pushNamed<T>(
+        return _goPush<T>(
           pushGlobally ? route.name : _getSubRouteName(route),
-          pathParameters: pathParameters,
-          queryParameters: queryParameters,
-          extra: extra,
+          args: args,
+          isQueryArgs: isQueryArgs,
         );
       } catch (_) {
         if (forcePushToSubRoutes) rethrow;
-        return GoRouter.of(this).pushNamed<T>(
-          route.name,
-          pathParameters: pathParameters,
-          queryParameters: queryParameters,
-          extra: extra,
-        );
+        return _goPush<T>(route.name, args: args, isQueryArgs: isQueryArgs);
       }
     }
+  }
+
+  Future<T?> _goPush<T extends Object?>(
+    String name, {
+    RouterBaseArgs? args,
+    bool isQueryArgs = true,
+    Object? extra,
+  }) async {
+    print(args);
+    return GoRouter.of(this).pushNamed<T>(
+      name,
+      pathParameters: !isQueryArgs ? args?.toQueryParams() ?? {} : {},
+      queryParameters: isQueryArgs ? args?.toQueryParams() ?? {} : {},
+      extra: extra,
+    );
   }
 
   void pushRouteReplacement(
